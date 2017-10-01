@@ -1,7 +1,9 @@
 import * as twgl from "twgl.js";
+import { RenderManager } from "./index";
 
 export class Framebuffer {
 
+    private gl: WebGLRenderingContext = RenderManager.getContext();
     private programInfo: twgl.ProgramInfo;
     private bufferInfo: twgl.BufferInfo;
     private framebufferInfo: twgl.FramebufferInfo;
@@ -9,7 +11,6 @@ export class Framebuffer {
     public readonly uniforms: any = {};
     
     constructor(
-        private gl: WebGLRenderingContext,
         private fs: string, 
         public readonly width = 512,
         public readonly height = 512
@@ -20,10 +21,10 @@ export class Framebuffer {
             position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
             texcoord: [ 1,1, 1,0, 0,1, 0,1, 1,0, 0,0  ]            
         });
-        this.framebufferInfo = twgl.createFramebufferInfo(gl, [
+        this.framebufferInfo = twgl.createFramebufferInfo(this.gl, [
             {
-                attach: gl.COLOR_ATTACHMENT0,
-                wrap: gl.REPEAT
+                attach: this.gl.COLOR_ATTACHMENT0,
+                wrap: this.gl.REPEAT
             }
         ], this.width, this.height);
         twgl.bindFramebufferInfo(this.gl);  

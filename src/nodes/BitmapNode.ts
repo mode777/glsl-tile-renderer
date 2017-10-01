@@ -1,29 +1,28 @@
 import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
+import { RenderManager } from "../gl/index";
 
 export class BitmapNode extends TextureNode {
 
-    private initializer: Promise<WebGLTexture>;
-
-    constructor(private gl: WebGLRenderingContext, path: string){
-        super();
-
-        this.initializer = new Promise((res,rej) => {
-            const texture = twgl.createTexture(gl, {
-                src: path
-            }, (err, tex, source) => { 
-                if(err)
-                rej(err);
-                
-                res(tex);              
-            });
-            
-        });       
+    static async createFromUrlAsync(url: string){
+        const texture = await new Promise<WebGLTexture>((res,rej) => {
+            twgl.createTexture(RenderManager.getContext(), {
+                src: url
+            }, (err, tex) => res(tex));
+        });
+        const node = new BitmapNode();
+        node._texture = texture;
+        return node;
     }
 
-    protected async refreshAsync(){
-        var tex = await this.initializer;
-        return tex;
+    private _texture: WebGLTexture;
+
+    private constructor(){
+        super(); 
+    }
+
+    protected refresh(){
+        return this._texture;
     }
 
 }

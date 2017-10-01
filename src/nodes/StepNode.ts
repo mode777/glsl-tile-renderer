@@ -7,9 +7,9 @@ export class StepNode extends TextureNode {
     private framebuffer: Framebuffer;
     private _input: TextureNode;
 
-    constructor(private gl: WebGLRenderingContext, private width, private height){
+    constructor(private width, private height){
         super();
-        this.framebuffer = new Framebuffer(gl, require("../../assets/shaders/basic/step.glsl"), width, height);
+        this.framebuffer = new Framebuffer(require("../../assets/shaders/basic/step.glsl"), width, height);
         this.framebuffer.uniforms.threshold = 0.5;
         this.framebuffer.uniforms.smoothing = 0.05;
     }
@@ -33,9 +33,20 @@ export class StepNode extends TextureNode {
         this.invalidate;
     }
     
-    protected async refreshAsync(){
+    public isValid(){
+        if(!this._input)
+            return false;
+
+        console.log(this._input.isValid(),
+        super.isValid());
+
+        return this._input.isValid() &&
+            super.isValid()
+    }
+
+    protected refresh(){
         if(this._input)
-            this.framebuffer.uniforms.texture = await this._input.getTextureAsync();
+            this.framebuffer.uniforms.texture = this._input.getTexture();
         else
             console.warn("Step Node is missing input");
 

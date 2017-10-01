@@ -9,9 +9,9 @@ export class BlendNode extends TextureNode {
     private _input1: TextureNode;
     private _map: TextureNode;
 
-    constructor(private gl: WebGLRenderingContext, private width, private height){
+    constructor(private width, private height){
         super();
-        this.framebuffer = new Framebuffer(gl, require("../../assets/shaders/basic/blend.glsl"), width, height);
+        this.framebuffer = new Framebuffer(require("../../assets/shaders/basic/blend.glsl"), width, height);
         this.framebuffer.uniforms.threshold = 0.5;
     }
 
@@ -46,16 +46,26 @@ export class BlendNode extends TextureNode {
         this.framebuffer.uniforms.threshold = value;
         this.invalidate();
     }
+
+    public isValid(){
+        if(!this._input0 || !this.input1 || !this._map)
+            return false;
+
+        return this._input0.isValid() &&
+            this._input1.isValid() &&
+            this._map.isValid() &&
+            super.isValid()
+    }
     
-    protected async refreshAsync(){
+    protected refresh(){
         
         if(this._input1 && this.input1 && this.map){
-            this.framebuffer.uniforms.texture0 = await this._input0.getTextureAsync();
-            this.framebuffer.uniforms.texture1 = await this._input1.getTextureAsync();
-            this.framebuffer.uniforms.map = await this._map.getTextureAsync();
+            this.framebuffer.uniforms.texture0 = this._input0.getTexture();
+            this.framebuffer.uniforms.texture1 = this._input1.getTexture();
+            this.framebuffer.uniforms.map = this._map.getTexture();
         }
         else
-        console.warn("Blend node is missing inputs");
+           console.warn("Blend node is missing inputs");
         
         
         this.framebuffer.refresh()

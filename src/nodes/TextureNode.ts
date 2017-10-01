@@ -7,11 +7,15 @@ export abstract class TextureNode {
         this._isValid = false;
     }
 
-    protected abstract refreshAsync(): Promise<WebGLTexture>;    
+    protected abstract refresh(): WebGLTexture;    
     
-    async getTextureAsync(){
+    public isValid(){
+        return this._isValid;
+    }    
+    
+    getTexture(){
         if(!this._isValid){
-            this.texture = await this.refreshAsync();
+            this.texture = this.refresh();
         }
         this._isValid = true;
         return this.texture;

@@ -6,22 +6,16 @@ export class CheckerNode extends TextureNode {
 
     private framebuffer: Framebuffer;
 
-    constructor(private gl: WebGLRenderingContext, private width, private height){
+    constructor(private width, private height){
         super();
-        this.framebuffer = new Framebuffer(gl, require("../../assets/shaders/basic/checkers.glsl"), width, height);
-        this.update();
+        this.framebuffer = new Framebuffer(require("../../assets/shaders/basic/checkers.glsl"), width, height);
     }
-
-    private update(){
-        this.framebuffer.uniforms.resolution = [this.width/this._tx, this.height/this._ty];
-        this.invalidate();
-    }
-
+   
     private _tx = 1;
     get tileX() { return this._tx;  }
     set tileX(val) { 
         this._tx = val;
-        this.update();
+        this.invalidate();
     }
     
     private _ty = 1;
@@ -30,18 +24,19 @@ export class CheckerNode extends TextureNode {
     }
     set tileY(val) { 
         this._ty = val;
-        this.update();
+        this.invalidate();
     }
-
+    
     set tile(val){
         this._tx = val;
         this._ty = val;
-        this.update();
+        this.invalidate();
     }
-
-    protected refreshAsync(){
+    
+    protected refresh(){
+        this.framebuffer.uniforms.resolution = [this.width/this._tx, this.height/this._ty];
         this.framebuffer.refresh()
-        return Promise.resolve(this.framebuffer.texture);
+        return this.framebuffer.texture;
     }
-
+    
 }
