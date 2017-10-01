@@ -19,7 +19,7 @@ export class Framebuffer {
         this.programInfo = twgl.createProgramInfo(this.gl, [vs, fs]);
         this.bufferInfo = twgl.createBufferInfoFromArrays(this.gl, {
             position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
-            texcoord: [ 1,1, 1,0, 0,1, 0,1, 1,0, 0,0  ]            
+            texcoord: [ 0,0, 1,0, 0,1, 0,1, 1,0, 1,1  ]            
         });
         this.framebufferInfo = twgl.createFramebufferInfo(this.gl, [
             {

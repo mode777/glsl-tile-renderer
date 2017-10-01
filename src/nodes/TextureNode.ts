@@ -1,4 +1,4 @@
-import { Trackable } from "../model/TrackableObject";
+import { Trackable } from "../model/Trackable";
 
 export abstract class TextureNode extends Trackable {
     

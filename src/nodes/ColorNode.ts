@@ -1,7 +1,7 @@
 import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
 import { RenderManager } from "../gl/index";
-import { track } from "../model/TrackableObject";
+import { track } from "../model/Trackable";
 
 export class ColorNode extends TextureNode {
 

@@ -1,7 +1,7 @@
 import * as twgl from "twgl.js";
 import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
-import { track } from "../model/TrackableObject";
+import { track } from "../model/Trackable";
 
 export class CheckerNode extends TextureNode {
 
