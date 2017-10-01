@@ -1,6 +1,7 @@
 import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
 import { RenderManager } from "../gl/index";
+import { track } from "../model/TrackableObject";
 
 export class BitmapNode extends TextureNode {
 
@@ -15,7 +16,7 @@ export class BitmapNode extends TextureNode {
         return node;
     }
 
-    private _texture: WebGLTexture;
+    @track private _texture: WebGLTexture;
 
     private constructor(){
         super(); 

@@ -1,23 +1,19 @@
 import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
 import { RenderManager } from "../gl/index";
+import { track } from "../model/TrackableObject";
 
 export class ColorNode extends TextureNode {
 
     private _texture: WebGLTexture;
     private _gl = RenderManager.getContext();
-    private _src: Uint8Array;
+    
+    @track private _src: Uint8Array;
 
     constructor(r: number, g: number, b: number){
         super();
 
-        this._src = new Uint8Array([
-            r,
-            g,
-            b,
-            255              
-        ]);
-
+        this.setColor(r,g,b);
         this._texture = twgl.createTexture(this._gl, {
             format: this._gl.RGBA,
             src: this._src,
@@ -27,10 +23,7 @@ export class ColorNode extends TextureNode {
     }
 
     public setColor(r: number, g: number, b: number){
-        this._src[0] = r;
-        this._src[1] = g;
-        this._src[2] = b;
-        this.invalidate();
+        this._src = new Uint8Array([r,g,b,255]);
     }
 
     protected refresh(){

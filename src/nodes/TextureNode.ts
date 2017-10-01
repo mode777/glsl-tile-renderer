@@ -1,23 +1,16 @@
-export abstract class TextureNode {
+import { Trackable } from "../model/TrackableObject";
+
+export abstract class TextureNode extends Trackable {
     
-    private _isValid = false;
     protected texture: WebGLTexture;
     
-    protected invalidate(){
-        this._isValid = false;
-    }
-
     protected abstract refresh(): WebGLTexture;    
-    
-    public isValid(){
-        return this._isValid;
-    }    
-    
+        
     getTexture(){
-        if(!this._isValid){
-            this.texture = this.refresh();
+        if(this.hasChanges){
+            this.texture = this.refresh();    
+            this.setUpdated();        
         }
-        this._isValid = true;
         return this.texture;
     } 
 }
