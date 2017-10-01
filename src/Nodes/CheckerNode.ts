@@ -1,19 +1,19 @@
 import * as twgl from "twgl.js";
-import { Shader } from "../gl/index";
+import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 
 export class CheckerNode extends TextureNode {
 
-    private shader: Shader;
+    private framebuffer: Framebuffer;
 
     constructor(private gl: WebGLRenderingContext, private width, private height){
         super();
-        this.shader = new Shader(gl, require("../../assets/shaders/basic/checkers.glsl"), width, height);
+        this.framebuffer = new Framebuffer(gl, require("../../assets/shaders/basic/checkers.glsl"), width, height);
         this.update();
     }
 
     private update(){
-        this.shader.uniforms.resolution = [this.width/this._tx, this.height/this._ty];
+        this.framebuffer.uniforms.resolution = [this.width/this._tx, this.height/this._ty];
         this.invalidate();
     }
 
@@ -40,8 +40,8 @@ export class CheckerNode extends TextureNode {
     }
 
     protected refreshAsync(){
-        this.shader.refresh()
-        return Promise.resolve(this.shader.texture);
+        this.framebuffer.refresh()
+        return Promise.resolve(this.framebuffer.texture);
     }
 
 }

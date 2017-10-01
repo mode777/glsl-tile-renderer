@@ -1,6 +1,6 @@
 import * as twgl from "twgl.js";
 
-export class Shader {
+export class Framebuffer {
 
     private programInfo: twgl.ProgramInfo;
     private bufferInfo: twgl.BufferInfo;
@@ -18,7 +18,7 @@ export class Shader {
         this.programInfo = twgl.createProgramInfo(this.gl, [vs, fs]);
         this.bufferInfo = twgl.createBufferInfoFromArrays(this.gl, {
             position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
-            texcoord: [ 0,  1,    1,  1,     0, 0,     0, 0,    1,  1,    1, 0   ]            
+            texcoord: [ 1,1, 1,0, 0,1, 0,1, 1,0, 0,0  ]            
         });
         this.framebufferInfo = twgl.createFramebufferInfo(gl, [
             {

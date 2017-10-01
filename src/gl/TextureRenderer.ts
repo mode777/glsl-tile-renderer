@@ -22,6 +22,10 @@ export class TextureRenderer {
         this.refresh();
     }
 
+    get texture() {
+        return this._texture;
+    }
+
     public refresh(){
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);        
         this.gl.useProgram(this.programInfo.program);
