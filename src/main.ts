@@ -1,12 +1,13 @@
 import * as twgl from "twgl.js";
-import * as dat from "dat.gui/build/dat.gui";
+import * as dat from "dat-gui";
 
 import { Framebuffer, RenderManager } from "./gl/index";
 import { StepNode, BitmapNode, BlendNode, CheckerNode } from "./nodes/index";
 import { TextureNode } from "./Nodes/TextureNode";
 import { ColorNode } from "./nodes/ColorNode";
 import { Trackable, track } from "./model/Trackable";
-import { NodeThumbnail } from "./ui/NodeThumbnail";
+import { NodeImage } from "./ui/NodeThumbnail";
+import { GuiManager } from "./ui/index";
 
 RenderManager.init((<HTMLCanvasElement>document.getElementById("canvas")));
 const gl = RenderManager.getContext();
@@ -30,42 +31,30 @@ const gl = RenderManager.getContext();
     const color = new ColorNode(255, 128, 0);
     color.setColor(0,128,255);
        
-    const thumbnails = [
-        new NodeThumbnail(checkers),
-        new NodeThumbnail(tex1),
-        new NodeThumbnail(tex2),
-        new NodeThumbnail(step),
-        new NodeThumbnail(blend),
-        new NodeThumbnail(color)
+    const preview = new NodeImage(blend, 512, 512);
+
+    const images = [
+        preview,
+        new NodeImage(checkers),
+        new NodeImage(tex1),
+        new NodeImage(tex2),
+        new NodeImage(step),
+        new NodeImage(blend),
+        new NodeImage(color)
     ];
 
-    let current: TextureNode;
-    let gui: dat.GUI;
-
+    //https://codepen.io/xgundam05/pen/bNeYbb?sort_col=item_updated_at&
     const div = document.createElement("div");
     document.body.appendChild(div);
-    thumbnails.forEach(x => { 
-        div.appendChild(x.image);
-        x.image.onclick = () => {
-            current = x.node;
-
-            if(gui){
-                gui.destroy();
-                gui = null;
-            }
-
-            if(x.node["__gui"]){
-                gui = new dat.GUI;
-                x.node["__gui"].forEach(name => {
-                    gui.add(x.node, name);
-                });
-            }
+    images.forEach(x => { 
+        div.appendChild(x.element);
+        x.element.onclick = () => {
+            preview.node = x.node;
+            GuiManager.showEditor(x.node);
         } 
     });
     
     RenderManager.runLoop(()=> {        
-        thumbnails.forEach(x => x.update());
-        if(current)
-            RenderManager.render(current.getTexture(), 512, 512);        
+        images.forEach(x => x.update());       
     });
 })();

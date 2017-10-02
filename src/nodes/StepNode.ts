@@ -9,8 +9,8 @@ export class StepNode extends TextureNode {
     private framebuffer: Framebuffer;
 
     @track input: TextureNode;
-    @track  @gui threshold = 0.5;
-    @track  @gui smooth = 0.05;
+    @track @gui({ max: 1, min: 0, step: 0.01}) threshold = 0.5;
+    @track @gui({ max: 1, min: 0, step: 0.01}) smooth = 0.05;
 
     constructor(private width, private height){
         super();

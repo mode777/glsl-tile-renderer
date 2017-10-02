@@ -3,8 +3,7 @@
 // Definitions by: Satoru Kimura <https://github.com/gyohk>, ZongJing Lu <https://github.com/sonic3d>, Richard Roylance <https://github.com/rroylance>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-declare module "dat.gui/build/dat.gui" {
-
+declare module "dat-gui" {
     
     export class GUI {
         constructor(option?: GUIParams);

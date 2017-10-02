@@ -8,8 +8,8 @@ export class CheckerNode extends TextureNode {
 
     private framebuffer: Framebuffer;
 
-    @track @gui tileX = 1;
-    @track @gui tileY = 1;
+    @track @gui({ max: 16, min: 1, step: 1}) tileX = 1;
+    @track @gui({ max: 16, min: 1, step: 1}) tileY = 1;
 
     constructor(private width, private height){
         super();

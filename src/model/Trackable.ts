@@ -12,6 +12,7 @@ export abstract class Trackable {
     private _currentState = {};
     private _changes: string[];
     private _revision = 0;
+    private _marked = false;
     
     private get _tracked() { return this["__tracked"] ? Object.keys(this["__tracked"]) : []; }
 
@@ -49,10 +50,15 @@ export abstract class Trackable {
     }
 
     public get hasChanges(){
-        return this.changes.length > 0;
+        return this.changes.length > 0 || this._marked;
+    }
+
+    public markChanged(){
+        this._marked = true;
     }
     
     protected setUpdated(){
+        this._marked = false;
         this._revision++;
         this._changes = null;
         this._lastState = this._currentState;

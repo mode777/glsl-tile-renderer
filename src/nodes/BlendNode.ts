@@ -11,7 +11,7 @@ export class BlendNode extends TextureNode {
     @track input0: TextureNode;
     @track input1: TextureNode;
     @track map: TextureNode;
-    @track @gui threshold = 0.5;
+    @track @gui() threshold = 0.5;
 
     constructor(private width, private height){
         super();
