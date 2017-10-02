@@ -13,10 +13,16 @@
   "author": "Alexander Klingenbeck",
   "license": "MIT",
   "dependencies": {
+    "@types/dat-gui": "^0.6.3",
+    "css-loader": "^0.28.7",
+    "dat.gui": "^0.6.1",
     "es6-promise": "^4.1.1",
     "gl-matrix": "^2.3.2",
+    "html-loader": "^0.5.1",
     "pako": "^1.0.5",
+    "sass-loader": "^6.0.6",
     "stats.js": "^0.17.0",
+    "style-loader": "^0.18.2",
     "tslib": "^1.7.1",
     "twgl.js": "^3.4.0"
   },

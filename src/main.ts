@@ -1,4 +1,6 @@
 import * as twgl from "twgl.js";
+import * as dat from "dat.gui/build/dat.gui";
+
 import { Framebuffer, RenderManager } from "./gl/index";
 import { StepNode, BitmapNode, BlendNode, CheckerNode } from "./nodes/index";
 import { TextureNode } from "./Nodes/TextureNode";
@@ -37,12 +39,33 @@ const gl = RenderManager.getContext();
         new NodeThumbnail(color)
     ];
 
+    let current: TextureNode;
+    let gui: dat.GUI;
+
     const div = document.createElement("div");
     document.body.appendChild(div);
-    thumbnails.forEach(x => div.appendChild(x.image));
+    thumbnails.forEach(x => { 
+        div.appendChild(x.image);
+        x.image.onclick = () => {
+            current = x.node;
+
+            if(gui){
+                gui.destroy();
+                gui = null;
+            }
+
+            if(x.node["__gui"]){
+                gui = new dat.GUI;
+                x.node["__gui"].forEach(name => {
+                    gui.add(x.node, name);
+                });
+            }
+        } 
+    });
     
     RenderManager.runLoop(()=> {        
         thumbnails.forEach(x => x.update());
-        RenderManager.render(blend.getTexture(), 512, 512);        
+        if(current)
+            RenderManager.render(current.getTexture(), 512, 512);        
     });
 })();

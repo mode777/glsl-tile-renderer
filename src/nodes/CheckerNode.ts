@@ -2,13 +2,14 @@ import * as twgl from "twgl.js";
 import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
+import { gui } from "../ui/index";
 
 export class CheckerNode extends TextureNode {
 
     private framebuffer: Framebuffer;
 
-    @track tileX = 1;
-    @track tileY = 1;
+    @track @gui tileX = 1;
+    @track @gui tileY = 1;
 
     constructor(private width, private height){
         super();

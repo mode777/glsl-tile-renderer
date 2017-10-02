@@ -2,6 +2,7 @@ import * as twgl from "twgl.js";
 import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
+import { gui } from "../ui/index";
 
 export class BlendNode extends TextureNode {
 
@@ -10,7 +11,7 @@ export class BlendNode extends TextureNode {
     @track input0: TextureNode;
     @track input1: TextureNode;
     @track map: TextureNode;
-    @track threshold = 0.5;
+    @track @gui threshold = 0.5;
 
     constructor(private width, private height){
         super();

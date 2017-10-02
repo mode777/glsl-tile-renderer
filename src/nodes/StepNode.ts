@@ -2,14 +2,15 @@ import * as twgl from "twgl.js";
 import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
+import { gui } from "../ui/index";
 
 export class StepNode extends TextureNode {
 
     private framebuffer: Framebuffer;
 
     @track input: TextureNode;
-    @track threshold = 0.5;
-    @track smooth = 0.05;
+    @track  @gui threshold = 0.5;
+    @track  @gui smooth = 0.05;
 
     constructor(private width, private height){
         super();

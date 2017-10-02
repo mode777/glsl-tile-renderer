@@ -9,13 +9,26 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                test: /\.html$/,
+                use: 'html-loader'
+            },
+            {
                 test: /\.glsl$/,
                 use: 'raw-loader'
             },
             {
                 test: /\.png$/,
                 use: 'binary-loader'
+            },
+            {
+                test: /\.css$/,
+                use: 'style-loader!css-loader'
+            },
+            {
+                test: /\.scss$/,
+                loader: 'style-loader!css-loader!sass-loader'
             }
+
         ]
         },
         resolve: {
