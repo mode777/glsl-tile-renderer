@@ -46,23 +46,24 @@ const gl = RenderManager.getContext();
     ];
 
     //https://codepen.io/xgundam05/pen/bNeYbb?sort_col=item_updated_at&
-    const div = document.createElement("div");
-    document.body.appendChild(div);
-    images.forEach(x => { 
-        div.appendChild(x.element);
-        x.element.onclick = () => {
-            preview.node = x.node;
-            GuiManager.showEditor(x.node);
-        } 
-    });
+    // const div = document.createElement("div");
+    // document.body.appendChild(div);
+    // images.forEach(x => { 
+    //     div.appendChild(x.element);
+    //     x.element.onclick = () => {
+    //         preview.node = x.node;
+    //         GuiManager.showEditor(x.node);
+    //     } 
+    // });
     
     RenderManager.runLoop(()=> {        
         images.forEach(x => x.update());       
     });
 
-    NodeManager.init(document.getElementById("gui"));      
+    NodeManager.init(document.body);      
     // Node 1
     var node = new GuiNode('Another One');
+    node.initUI();
     node.addInput('Value1');
     node.addInput('Value2');
     node.addInput('Value3');
@@ -94,7 +95,6 @@ const gl = RenderManager.getContext();
     node4.connectTo(node2.inputs[0]);
 
     // Add to DOM
-    node.initUI();
     node2.initUI();
     node3.initUI();
     node4.initUI();

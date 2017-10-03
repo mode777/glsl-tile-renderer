@@ -73,7 +73,6 @@ export module NodeManager {
         };
     
         if (e.offsetParent) {
-            console.log((<HTMLElement>e.offsetParent).offsetTop, e.offsetParent);
             var parentOff = getFullOffset(<HTMLElement>e.offsetParent);
             offset.top += parentOff.top;
             offset.left += parentOff.left;

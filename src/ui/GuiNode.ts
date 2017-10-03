@@ -134,7 +134,7 @@ export class GuiNode {
         const that = this;
 
         $(this.domElement).draggable({
-            containment: NodeManager.getContainer(),
+            containment: 'window',
             cancel: '.x-connection, .x-output, .x-input',
             drag: function (e, ui) {
                 that.updatePosition();
