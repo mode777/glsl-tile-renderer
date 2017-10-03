@@ -13,6 +13,9 @@ export class CheckerNode extends TextureNode {
 
     constructor(private width, private height){
         super();
+
+        this.name = "Checker";
+
         this.framebuffer = new Framebuffer(require("../../assets/shaders/basic/checkers.glsl"), width, height);
     }   
     

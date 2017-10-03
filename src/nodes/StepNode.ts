@@ -3,17 +3,20 @@ import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
 import { gui } from "../ui/index";
+import { input } from "./decorators";
 
 export class StepNode extends TextureNode {
 
     private framebuffer: Framebuffer;
+    
 
-    @track input: TextureNode;
+    @track @input input: TextureNode;
     @track @gui({ max: 1, min: 0, step: 0.01}) threshold = 0.5;
     @track @gui({ max: 1, min: 0, step: 0.01}) smooth = 0.05;
 
     constructor(private width, private height){
         super();
+        this.name = "Step"
         this.framebuffer = new Framebuffer(require("../../assets/shaders/basic/step.glsl"), width, height);
     }    
 

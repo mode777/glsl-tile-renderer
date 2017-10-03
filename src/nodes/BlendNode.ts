@@ -3,18 +3,20 @@ import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
 import { gui } from "../ui/index";
+import { input } from "./decorators";
 
 export class BlendNode extends TextureNode {
 
     private framebuffer: Framebuffer;
 
-    @track input0: TextureNode;
-    @track input1: TextureNode;
-    @track map: TextureNode;
+    @track @input input0: TextureNode;
+    @track @input input1: TextureNode;
+    @track @input map: TextureNode;
     @track @gui() threshold = 0.5;
 
     constructor(private width, private height){
         super();
+        this.name = "Blend";
         this.framebuffer = new Framebuffer(require("../../assets/shaders/basic/blend.glsl"), width, height);
     }          
     

@@ -1,9 +1,12 @@
 import { NodeInput } from "./NodeInput";
+import { TextureNode } from "../nodes/TextureNode";
+import { GuiNode } from "./GuiNode";
 
 let container: HTMLElement;
 let svg: SVGElement;
 let namespace: string;
 let currentInput: NodeInput;
+let nodes: GuiNode[];
 
 export module NodeManager {
 
@@ -36,6 +39,27 @@ export module NodeManager {
                 currentInput = undefined;
             }
         };
+    }
+
+    export function addNode(node: TextureNode){
+        const idx = nodes.indexOf(node);
+        if(idx !== -1)
+            return nodes[idx];
+
+        const gui = new GuiNode(node.name);
+        
+        if(gui["__inputs"]){
+            let ctr = 0;
+            gui["__inputs"].forEach(key => {
+                gui.addInput(key);
+                if(node[key]){
+                    const peer = addNode
+                }
+                ctr++;
+            });
+        }
+        gui.initUI();
+        return gui;
     }
 
     export function getNamespace() {

@@ -20,6 +20,7 @@ export class BitmapNode extends TextureNode {
 
     private constructor(){
         super(); 
+        this.name = "Bitmap"
     }
 
     protected refresh(){

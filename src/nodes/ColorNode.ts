@@ -14,6 +14,8 @@ export class ColorNode extends TextureNode {
     constructor(r: number, g: number, b: number){
         super();
 
+        this.name = 'color';
+
         this.setColor(r,g,b);
         this._texture = twgl.createTexture(this._gl, {
             format: this._gl.RGBA,
