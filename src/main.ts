@@ -45,6 +45,7 @@ const gl = RenderManager.getContext();
         new NodeImage(color)
     ];
 
+    //https://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
     //https://codepen.io/xgundam05/pen/bNeYbb?sort_col=item_updated_at&
     // const div = document.createElement("div");
     // document.body.appendChild(div);
