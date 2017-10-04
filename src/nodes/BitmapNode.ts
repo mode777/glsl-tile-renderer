@@ -2,7 +2,9 @@ import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
 import { RenderManager } from "../gl/index";
 import { track } from "../model/Trackable";
+import { node } from "./decorators";
 
+@node()
 export class BitmapNode extends TextureNode {
 
     static async createFromUrlAsync(url: string){

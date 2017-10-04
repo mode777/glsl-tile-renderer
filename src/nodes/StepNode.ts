@@ -1,5 +1,5 @@
 import * as twgl from "twgl.js";
-import { Framebuffer } from "../gl/index";
+import { Framebuffer, RenderManager } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
 import { gui } from "../ui/index";
@@ -23,8 +23,10 @@ export class StepNode extends TextureNode {
     protected refresh(){
         if(this.input)
             this.framebuffer.uniforms.texture = this.input.getTexture();
-        else
+        else{
+            this.framebuffer.uniforms.texture = RenderManager.getDefaultTexture();
             console.warn("Step Node is missing input");
+        }
 
         this.framebuffer.uniforms.threshold = this.threshold;
         this.framebuffer.uniforms.smoothing = this.smooth;
