@@ -52,4 +52,8 @@ export module RenderManager {
         gl.canvas.width = width;
         gl.canvas.height = height;
     }
+
+    export function getDefaultTexture(){
+        return texEmpty;
+    }
 }
