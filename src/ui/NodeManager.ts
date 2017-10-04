@@ -41,7 +41,7 @@ export module NodeManager {
         };
     }
 
-    export function addNode(node: TextureNode){
+    export function addNode(node: TextureNode, x = 100, y = 100){
         const existing = nodes.filter(x => x.textureNode === node)[0]
         if(existing)
             return existing;
@@ -62,6 +62,10 @@ export module NodeManager {
             });
         }
         gui.initUI();
+        setTimeout(() => {
+            gui.moveTo(x,y);
+        }, 100);
+
         return gui;
     }
 

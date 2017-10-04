@@ -49,12 +49,12 @@ const gl = RenderManager.getContext();
     // });    
     
     NodeManager.init(document.body);      
-    NodeManager.addNode(checkers);
-    NodeManager.addNode(tex1);
-    NodeManager.addNode(tex2);
-    NodeManager.addNode(step);
-    NodeManager.addNode(blend);
-    NodeManager.addNode(color);
+    NodeManager.addNode(checkers, 600, 300);
+    NodeManager.addNode(tex1, 600, 100);
+    NodeManager.addNode(tex2, 400, 100);
+    NodeManager.addNode(step, 400, 300);
+    NodeManager.addNode(blend, 100, 200);
+    NodeManager.addNode(color, 100, 400);
 
     RenderManager.runLoop(()=> {        
         NodeManager.update();       

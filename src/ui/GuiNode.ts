@@ -138,9 +138,9 @@ export class GuiNode {
 
     }
 
-    moveTo(point: {x: number, y: number}) {
-        this.domElement.style.top = point.y + 'px';
-        this.domElement.style.left = point.x + 'px';
+    moveTo(x: number, y: number) {
+        this.domElement.style.top = y + 'px';
+        this.domElement.style.left = x + 'px';
         this.updatePosition();
     }
 

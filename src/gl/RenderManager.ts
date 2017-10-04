@@ -3,6 +3,7 @@ import * as twgl from "twgl.js";
 let gl: WebGLRenderingContext;
 let program: twgl.ProgramInfo;
 let buffer: twgl.BufferInfo;
+let texEmpty: WebGLTexture;
 
 export module RenderManager {
     
@@ -18,6 +19,12 @@ export module RenderManager {
         buffer = twgl.createBufferInfoFromArrays(gl, {
             position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
             texcoord: [ 0,  1,    1,  1,     0, 0,     0, 0,    1,  1,    1, 0   ]
+        });
+        texEmpty = twgl.createTexture(gl, {
+            format:gl.ALPHA,
+            src: [128],
+            width: 1,
+            height: 1
         });
     }    
 
