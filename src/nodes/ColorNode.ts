@@ -2,7 +2,7 @@ import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
 import { RenderManager } from "../gl/index";
 import { track } from "../model/Trackable";
-import { gui } from "../ui/index";
+import { gui } from "./decorators";
 
 export class ColorNode extends TextureNode {
 
@@ -27,6 +27,10 @@ export class ColorNode extends TextureNode {
 
     public setColor(r: number, g: number, b: number){
         this.src = [r,g,b];
+    }
+
+    public destroy(){
+        this._gl.deleteTexture(this._texture);
     }
 
     protected refresh(){

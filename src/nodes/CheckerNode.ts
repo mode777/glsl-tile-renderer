@@ -2,21 +2,17 @@ import * as twgl from "twgl.js";
 import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
-import { gui } from "../ui/index";
+import { ShaderNode } from "./ShaderNode";
+import { gui } from "./decorators";
 
-export class CheckerNode extends TextureNode {
-
-    private framebuffer: Framebuffer;
+export class CheckerNode extends ShaderNode {
 
     @track @gui({ max: 16, min: 1, step: 1}) tileX = 1;
     @track @gui({ max: 16, min: 1, step: 1}) tileY = 1;
 
-    constructor(private width, private height){
-        super();
-
+    constructor(width = 256, height = 256){
+        super(require("../../assets/shaders/basic/checkers.glsl"), width, height);
         this.name = "Checker";
-
-        this.framebuffer = new Framebuffer(require("../../assets/shaders/basic/checkers.glsl"), width, height);
     }   
     
     set tile(val){
@@ -26,8 +22,7 @@ export class CheckerNode extends TextureNode {
     
     protected refresh(){
         this.framebuffer.uniforms.resolution = [this.width/this.tileX, this.height/this.tileY];
-        this.framebuffer.refresh()
-        return this.framebuffer.texture;
+        return super.refresh();
     }
     
 }

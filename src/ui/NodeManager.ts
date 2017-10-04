@@ -52,7 +52,6 @@ export module NodeManager {
         if(node["__inputs"]){
             let ctr = 0;
             node["__inputs"].forEach(inputName => {
-                console.log(inputName)
                 gui.addInput(inputName);
                 if(node[inputName]){
                     const peer = addNode(node[inputName]);

@@ -5,6 +5,8 @@ export abstract class TextureNode extends Trackable {
     protected texture: WebGLTexture;
     
     protected abstract refresh(): WebGLTexture;    
+    public abstract destroy(): void;    
+
     public name = "";
         
     getTexture(){

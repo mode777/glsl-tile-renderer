@@ -24,7 +24,7 @@ export class Framebuffer {
         this.framebufferInfo = twgl.createFramebufferInfo(this.gl, [
             {
                 attach: this.gl.COLOR_ATTACHMENT0,
-                wrap: this.gl.REPEAT
+                wrap: this.gl.REPEAT,            
             }
         ], this.width, this.height);
         twgl.bindFramebufferInfo(this.gl);  
@@ -32,6 +32,11 @@ export class Framebuffer {
 
     get texture() {
         return this.framebufferInfo.attachments[0];
+    }
+
+    public destroy(){
+        this.gl.deleteTexture(this.framebufferInfo.attachments[0]);
+        this.gl.deleteFramebuffer(this.framebufferInfo.framebuffer);
     }
 
     refresh() {

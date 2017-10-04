@@ -2,37 +2,26 @@ import * as twgl from "twgl.js";
 import { Framebuffer, RenderManager } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
-import { gui } from "../ui/index";
-import { input } from "./decorators";
+import { input, gui } from "./decorators";
+import { ShaderNode } from "./ShaderNode";
 
-export class StepNode extends TextureNode {
-
-    private framebuffer: Framebuffer;
-    
+export class StepNode extends ShaderNode {
 
     @track @input input: TextureNode;
     @track @gui({ max: 1, min: 0, step: 0.01}) threshold = 0.5;
     @track @gui({ max: 1, min: 0, step: 0.01}) smooth = 0.05;
 
-    constructor(private width, private height){
-        super();
+    constructor(width = 256, height = 256){
+        super(require("../../assets/shaders/basic/step.glsl"), width, height);
         this.name = "Step"
-        this.framebuffer = new Framebuffer(require("../../assets/shaders/basic/step.glsl"), width, height);
     }    
 
     protected refresh(){
-        if(this.input)
-            this.framebuffer.uniforms.texture = this.input.getTexture();
-        else{
-            this.framebuffer.uniforms.texture = RenderManager.getDefaultTexture();
-            console.warn("Step Node is missing input");
-        }
-
+        this.framebuffer.uniforms.texture = this.input ? this.input.getTexture() : RenderManager.getDefaultTexture();
         this.framebuffer.uniforms.threshold = this.threshold;
         this.framebuffer.uniforms.smoothing = this.smooth;
 
-        this.framebuffer.refresh()
-        return this.framebuffer.texture;
+        return super.refresh();
     }
 
 }

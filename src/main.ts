@@ -10,6 +10,7 @@ import { NodeImage } from "./ui/NodeImage";
 import { GuiManager } from "./ui/index";
 import { NodeManager } from "./ui/NodeManager";
 import { GuiNode } from "./ui/GuiNode";
+import { ReflectionManager } from "./model/ReflectionManager";
 
 RenderManager.init((<HTMLCanvasElement>document.getElementById("canvas")));
 const gl = RenderManager.getContext();
@@ -33,8 +34,7 @@ const gl = RenderManager.getContext();
     const color = new ColorNode(255, 128, 0);
     color.setColor(0,128,255);
        
-    const preview = new NodeImage(blend, 512, 512);
-
+    const preview = new NodeImage(blend, 512, 512);   
 
     //https://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
     //https://codepen.io/xgundam05/pen/bNeYbb?sort_col=item_updated_at&

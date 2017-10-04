@@ -1,5 +1,6 @@
 import { TextureNode } from "../nodes/TextureNode";
 import * as dat from "dat-gui";
+import { ReflectionManager } from "../model/ReflectionManager";
 
 let gui: dat.GUI;
 
@@ -10,24 +11,28 @@ export module GuiManager {
             gui.destroy();
             gui = null;
         }
-        if(node["__gui"]){
-            gui = new dat.GUI({
-                width: 256
-            });
-            node["__gui"].forEach(editor => {      
-                let controller: dat.GUIController;
-                if(editor.options.type === 'color'){
-                    controller = gui.addColor(node, editor.name)
-                }
-                else {
-                    controller = gui.add(node, editor.name, editor.options.min, editor.options.max)
-                }
-                if(editor.options.step){
-                    controller.step(editor.step)
-                }
-                controller.onChange(editor.options.onChange);
-            });
-        }
+        gui = new dat.GUI({
+            width: 256
+        });
+
+        ReflectionManager.getMetadata(node, "gui").forEach(editor => {      
+            let controller: dat.GUIController;
+            if(editor.options.type === 'color'){
+                controller = gui.addColor(node, editor.name)
+            }
+            else {
+                controller = gui.add(node, editor.name, editor.options.min, editor.options.max)
+            }
+            if(editor.options.step){
+                controller.step(editor.step)
+            }
+            if(editor.options.name)
+                controller.name(editor.options.name);
+            if(editor.options.constraints)
+                controller.options(editor.options.constraints)
+            controller.onChange(editor.options.onChange);
+        });
+        
     }
     
 }
