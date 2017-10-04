@@ -6,7 +6,7 @@ let container: HTMLElement;
 let svg: SVGElement;
 let namespace: string;
 let currentInput: NodeInput;
-let nodes: GuiNode[];
+let nodes: GuiNode[] = [];
 
 export module NodeManager {
 
@@ -42,24 +42,31 @@ export module NodeManager {
     }
 
     export function addNode(node: TextureNode){
-        const idx = nodes.indexOf(node);
-        if(idx !== -1)
-            return nodes[idx];
+        const existing = nodes.filter(x => x.textureNode === node)[0]
+        if(existing)
+            return existing;
 
-        const gui = new GuiNode(node.name);
-        
-        if(gui["__inputs"]){
+        const gui = new GuiNode(node);
+        nodes.push(gui);
+
+        if(node["__inputs"]){
             let ctr = 0;
-            gui["__inputs"].forEach(key => {
-                gui.addInput(key);
-                if(node[key]){
-                    const peer = addNode
+            node["__inputs"].forEach(inputName => {
+                console.log(inputName)
+                gui.addInput(inputName);
+                if(node[inputName]){
+                    const peer = addNode(node[inputName]);
+                    peer.connectTo(gui.inputs[ctr]);
                 }
                 ctr++;
             });
         }
         gui.initUI();
         return gui;
+    }
+
+    export function update(){
+        nodes.forEach(x => x.updatePreview());
     }
 
     export function getNamespace() {

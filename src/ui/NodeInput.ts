@@ -6,7 +6,7 @@ export class NodeInput {
     domElement: HTMLDivElement;
     path: SVGPathElement;
 
-    constructor(public readonly name: string) {
+    constructor(public readonly name: string, public readonly owner: GuiNode) {
         this.initDom();
     }
 

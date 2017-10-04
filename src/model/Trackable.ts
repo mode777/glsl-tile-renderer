@@ -35,7 +35,7 @@ export abstract class Trackable {
     }
 
     private _trackableChanged(key: string, trackable: Trackable){
-        const present = typeof(this._lastState[key]) === "object";
+        const present = this._lastState[key] && typeof(this._lastState[key]) === "object";
         const instanceChanged = present && this._lastState[key].instance !== trackable;
         const revisionChanged = present && !instanceChanged && this._lastState[key].revision !== trackable._revision;
         const hasChanges = present && !instanceChanged && this._lastState[key].instance.hasChanges;

@@ -6,7 +6,7 @@ import { StepNode, BitmapNode, BlendNode, CheckerNode } from "./nodes/index";
 import { TextureNode } from "./Nodes/TextureNode";
 import { ColorNode } from "./nodes/ColorNode";
 import { Trackable, track } from "./model/Trackable";
-import { NodeImage } from "./ui/NodeThumbnail";
+import { NodeImage } from "./ui/NodeImage";
 import { GuiManager } from "./ui/index";
 import { NodeManager } from "./ui/NodeManager";
 import { GuiNode } from "./ui/GuiNode";
@@ -35,15 +35,6 @@ const gl = RenderManager.getContext();
        
     const preview = new NodeImage(blend, 512, 512);
 
-    const images = [
-        preview,
-        new NodeImage(checkers),
-        new NodeImage(tex1),
-        new NodeImage(tex2),
-        new NodeImage(step),
-        new NodeImage(blend),
-        new NodeImage(color)
-    ];
 
     //https://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
     //https://codepen.io/xgundam05/pen/bNeYbb?sort_col=item_updated_at&
@@ -55,49 +46,17 @@ const gl = RenderManager.getContext();
     //         preview.node = x.node;
     //         GuiManager.showEditor(x.node);
     //     } 
-    // });
+    // });    
     
-    RenderManager.runLoop(()=> {        
-        images.forEach(x => x.update());       
-    });
-
     NodeManager.init(document.body);      
-    // Node 1
-    var node = new GuiNode('Another One');
-    node.initUI();
-    node.addInput('Value1');
-    node.addInput('Value2');
-    node.addInput('Value3');
+    NodeManager.addNode(checkers);
+    NodeManager.addNode(tex1);
+    NodeManager.addNode(tex2);
+    NodeManager.addNode(step);
+    NodeManager.addNode(blend);
+    NodeManager.addNode(color);
 
-    // Node 2
-    var node2 = new GuiNode('Node 2');
-    node2.addInput('Text In');
-    node2.addInput('Value 5');
-
-    // Node 3
-    var node3 = new GuiNode('Something Else');
-    node3.addInput('Color4');
-    node3.addInput('Position');
-    node3.addInput('Noise Octaves');
-    
-    // Node 4
-    var node4 = new GuiNode('TextString');
-    node4.addInput('Value');
-
-    // Move to initial positions
-    node.moveTo({x: 300, y: 80});
-    node2.moveTo({x: 20, y: 70});
-    node3.moveTo({x:150, y:150});
-    node4.moveTo({x:150, y:20});
-
-    // Connect Nodes
-    node.connectTo(node3.inputs[0]);
-    node3.connectTo(node2.inputs[1]);
-    node4.connectTo(node2.inputs[0]);
-
-    // Add to DOM
-    node2.initUI();
-    node3.initUI();
-    node4.initUI();
-    
+    RenderManager.runLoop(()=> {        
+        NodeManager.update();       
+    });
 })();

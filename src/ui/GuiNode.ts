@@ -1,10 +1,11 @@
 import * as $ from "jquery";
 import "jquery-ui-browserify";
 
-console.log($);
-
 import { NodeInput } from "./NodeInput";
 import { NodeManager } from "./NodeManager";
+import { TextureNode } from "../nodes/TextureNode";
+import { NodeImage } from "./NodeImage";
+import { GuiManager } from "./GuiManager";
 
 export class GuiNode {
 
@@ -13,18 +14,20 @@ export class GuiNode {
     inputs: NodeInput[] = [];
     attachedPaths: NodeInput[] = [];
     connected = false;
-
+    
     domElement: HTMLDivElement;
     private outputDom: HTMLSpanElement;
+    private thumbnail: NodeImage
 
-    constructor(public name: string) {
+    constructor(public readonly textureNode: TextureNode) {
+        this.thumbnail = new NodeImage(textureNode, 128,128);
         this.initDom();
     }
 
     private initDom() {
         this.domElement = document.createElement('div');
         this.domElement.classList.add('x-node');
-        this.domElement.setAttribute('title', this.name);
+        this.domElement.setAttribute('title', this.textureNode.name);
         this.outputDom = document.createElement('span');
         this.outputDom.classList.add('x-output');
         this.outputDom.textContent = ' ';
@@ -33,6 +36,8 @@ export class GuiNode {
             this.outputDom.classList.add('hide');
 
         this.domElement.appendChild(this.outputDom);
+        this.domElement.appendChild(this.thumbnail.element);
+        this.thumbnail.element.onclick = (e) => GuiManager.showEditor(this.textureNode);
 
         this.outputDom.onclick = (e) => {
             const currentInput = NodeManager.getCurrentInput();
@@ -54,7 +59,7 @@ export class GuiNode {
     }
 
     addInput(name: string) {
-        const input = new NodeInput(name);
+        const input = new NodeInput(name, this);
         this.inputs.push(input);
         this.domElement.appendChild(input.domElement);
 
@@ -62,6 +67,8 @@ export class GuiNode {
     }
 
     detachInput(input: NodeInput) {
+        input.owner.textureNode[input.name] = null;
+           
         let index = -1;
         for (let i = 0; i < this.attachedPaths.length; i++) {
             if (this.attachedPaths[i] === input)
@@ -107,8 +114,14 @@ export class GuiNode {
         }
     }
 
+    updatePreview(){
+        this.thumbnail.update();
+    }
+
     connectTo(input: NodeInput) {
         input.node = this;
+        input.owner.textureNode[input.name] = this.textureNode;
+
         this.connected = true;
         this.domElement.classList.add('connected');
 
@@ -122,6 +135,7 @@ export class GuiNode {
 
         const pathStr = NodeManager.createPath(inputPt, outputPt);
         input.path.setAttributeNS(null, 'd', pathStr);
+
     }
 
     moveTo(point: {x: number, y: number}) {

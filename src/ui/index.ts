@@ -1,3 +1,3 @@
 export * from "./decorators";
-export * from "./NodeThumbnail";
+export * from "./NodeImage";
 export * from "./GuiManager";
