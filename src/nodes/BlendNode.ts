@@ -22,7 +22,7 @@ export class BlendNode extends TextureNode {
     
     protected refresh(){
         
-        if(this.input1 && this.input1 && this.map){
+        if(this.input0 && this.input1 && this.map){
             this.framebuffer.uniforms.texture0 = this.input0.getTexture();
             this.framebuffer.uniforms.texture1 = this.input1.getTexture();
             this.framebuffer.uniforms.map = this.map.getTexture();
