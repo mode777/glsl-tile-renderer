@@ -10,7 +10,8 @@ export class ColorNode extends TextureNode {
     private _texture: WebGLTexture;
     private _gl = RenderManager.getContext();
     
-    @track @gui({type: 'color'}) private src = [255,0,0];
+    @track @gui({type: 'color'}) 
+    private src = [255,0,0];
 
     constructor(r = 128, g = 128, b = 128){
         super();

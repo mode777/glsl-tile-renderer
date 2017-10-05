@@ -27,7 +27,7 @@ export module GuiManager {
                 controller = gui.add(node, editor.name, editor.options.min, editor.options.max)
             }
             if(editor.options.step){
-                controller.step(editor.step)
+                controller.step(editor.options.step)
             }
             if(editor.options.name)
                 controller.name(editor.options.name);

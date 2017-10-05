@@ -1,10 +1,12 @@
 precision mediump float;
 
-uniform vec2 resolution;
+uniform float tileX;
+uniform float tileY;
+
+varying vec2 v_texcoord;
 
 void main() {
-	vec2 st = gl_FragCoord.xy/resolution;
-
+    vec2 st = v_texcoord * vec2(tileX, tileY);
     vec2 pct = step(.5, mod(st, 1.0));
     vec3 color = vec3(abs(-1.0 + pct.x + pct.y));
     

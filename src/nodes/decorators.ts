@@ -1,4 +1,6 @@
 import { ReflectionManager } from "../model/ReflectionManager";
+import { TextureNode } from "./TextureNode";
+import { RenderManager } from "../gl/RenderManager";
 
 export interface GuiOptions {
     onChange?: (any, value) => void;
@@ -13,7 +15,7 @@ export interface GuiOptions {
 export function gui(options?: GuiOptions){
     options = options ? options : {};
     
-    return function gui(instance, name){
+    return (instance, name) => {
         ReflectionManager.addMetadata(instance, "gui", {
             name: name,
             options: options
@@ -21,15 +23,52 @@ export function gui(options?: GuiOptions){
     }
 }
 
-export function input(instance, name) {
-    ReflectionManager.addMetadata(instance, "inputs", name);
+export interface uniformOptions {
+    setter?: (val: any) => any;
+    uniformName?: string;
 }
 
-export function node(name?: string) {
+export function uniform(options?: uniformOptions){
+    options = options || {};
 
-    return function decorator(constructor: any) {
+    return (instance, name) => {
+        ReflectionManager.addMetadata(instance, "uniforms", {
+            name: name,
+            uniformName: options.uniformName || name,
+            setter: options.setter || ((val) => val)
+        });
+    }
+}
+
+export interface InputOptions {
+    uniformName?: string;
+    guiName?: string;
+}
+
+export function input(options?: InputOptions){
+    options = options || {};
+    
+    return (instance, name) => {
+        console.log("input deco");
+        ReflectionManager.addMetadata(instance, "inputs", {
+            name: name,
+            guiName: options.guiName || name,
+            uniformName: options.uniformName || name 
+        });
+    }
+}
+
+export interface NodeOptions {
+    name?: string;
+}
+
+export function node(options?: NodeOptions) {
+    options = options || {};
+
+    return (constructor: any) => {
+        console.log("class deco");
         ReflectionManager.addMetadata(window, "nodes", { 
-            name: name || constructor.name, 
+            name: options.name || constructor.name, 
             constructor: constructor 
         });
     }

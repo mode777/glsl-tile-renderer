@@ -1,7 +1,8 @@
 import { track } from "../model/Trackable";
-import { Framebuffer } from "../gl/index";
+import { Framebuffer, RenderManager } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { gui } from "./decorators";
+import { ReflectionManager } from "../model/ReflectionManager";
 
 const sizeConstraints = [
     4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048
@@ -37,7 +38,14 @@ export abstract class ShaderNode extends TextureNode {
         this.framebuffer.destroy();
     }
 
-    protected refresh(){           
+    protected refresh(){
+        const uniforms = this.framebuffer.uniforms;
+        ReflectionManager.getMetadata(this, "inputs").forEach(x => {
+            uniforms[x.uniformName] = this[x.name] ? this[x.name].getTexture() : RenderManager.getDefaultTexture();
+        });
+        ReflectionManager.getMetadata(this, "uniforms").forEach(x => {
+            uniforms[x.uniformName] = x.setter.call(this, this[x.name]);
+        });           
         this.framebuffer.refresh()
         return this.framebuffer.texture;
     }

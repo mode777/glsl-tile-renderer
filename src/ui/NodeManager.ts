@@ -48,9 +48,7 @@ export module NodeManager {
         
                 currentInput = undefined;
             }
-        };
-
-        
+        };       
 
         container.onmousedown = (e) => {
 
@@ -109,10 +107,10 @@ export module NodeManager {
         
         let ctr = 0;
         ReflectionManager.getMetadata(node, "inputs")
-            .forEach(inputName => {
-                gui.addInput(inputName);
-                if(node[inputName]){
-                    const peer = addNode(node[inputName]);
+            .forEach(input => {
+                gui.addInput(input.name);
+                if(node[input.name]){
+                    const peer = addNode(node[input.name]);
                     peer.connectTo(gui.inputs[ctr]);
                 }
                 ctr++;
