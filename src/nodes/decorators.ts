@@ -21,17 +21,16 @@ export function gui(options?: GuiOptions){
     }
 }
 
-export function input(prototype, name) {
-    if (!prototype.__inputs) {
-        prototype.__inputs = [];
-    }
-    prototype.__inputs.push(name);
+export function input(instance, name) {
+    ReflectionManager.addMetadata(instance, "inputs", name);
 }
 
 export function node(name?: string) {
 
     return function decorator(constructor: any) {
-        name = name || constructor.name;
-        return constructor;
+        ReflectionManager.addMetadata(window, "nodes", { 
+            name: name || constructor.name, 
+            constructor: constructor 
+        });
     }
 }

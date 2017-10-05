@@ -14,6 +14,9 @@ export module GuiManager {
         gui = new dat.GUI({
             width: 256
         });
+        gui.domElement.oncontextmenu = (e) => {
+            e.stopPropagation();
+        }
 
         ReflectionManager.getMetadata(node, "gui").forEach(editor => {      
             let controller: dat.GUIController;

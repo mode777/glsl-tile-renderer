@@ -3,8 +3,9 @@ import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
 import { ShaderNode } from "./ShaderNode";
-import { gui } from "./decorators";
+import { gui, node } from "./decorators";
 
+@node()
 export class CheckerNode extends ShaderNode {
 
     @track @gui({ max: 16, min: 1, step: 1}) tileX = 1;

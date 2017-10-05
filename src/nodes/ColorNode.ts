@@ -2,8 +2,9 @@ import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
 import { RenderManager } from "../gl/index";
 import { track } from "../model/Trackable";
-import { gui } from "./decorators";
+import { gui, node } from "./decorators";
 
+@node()
 export class ColorNode extends TextureNode {
 
     private _texture: WebGLTexture;
@@ -11,7 +12,7 @@ export class ColorNode extends TextureNode {
     
     @track @gui({type: 'color'}) private src = [255,0,0];
 
-    constructor(r: number, g: number, b: number){
+    constructor(r = 128, g = 128, b = 128){
         super();
 
         this.name = 'Color';

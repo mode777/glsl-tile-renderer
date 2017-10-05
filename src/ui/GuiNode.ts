@@ -37,7 +37,7 @@ export class GuiNode {
 
         this.domElement.appendChild(this.outputDom);
         this.domElement.appendChild(this.thumbnail.element);
-        this.thumbnail.element.onclick = (e) => GuiManager.showEditor(this.textureNode);
+        this.domElement.onclick = (e) => GuiManager.showEditor(this.textureNode);
 
         this.outputDom.onclick = (e) => {
             const currentInput = NodeManager.getCurrentInput();

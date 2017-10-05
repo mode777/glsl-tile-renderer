@@ -2,9 +2,10 @@ import * as twgl from "twgl.js";
 import { Framebuffer, RenderManager } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
-import { input, gui } from "./decorators";
+import { input, gui, node } from "./decorators";
 import { ShaderNode } from "./ShaderNode";
 
+@node()
 export class StepNode extends ShaderNode {
 
     @track @input input: TextureNode;

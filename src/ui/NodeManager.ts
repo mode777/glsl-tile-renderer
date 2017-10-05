@@ -1,19 +1,29 @@
 import { NodeInput } from "./NodeInput";
 import { TextureNode } from "../nodes/TextureNode";
 import { GuiNode } from "./GuiNode";
+import { ReflectionManager } from "../model/ReflectionManager";
+
+interface NodeDescription {
+    name: string;
+    constructor: new() => TextureNode;
+}
 
 let container: HTMLElement;
+let contextMenu: HTMLElement;
 let svg: SVGElement;
 let namespace: string;
 let currentInput: NodeInput;
-let nodes: GuiNode[] = [];
+let guiNodes: GuiNode[] = [];
+let nodes: NodeDescription[];
+
 
 export module NodeManager {
 
     export function init(_container: HTMLElement) {
+        nodes = ReflectionManager.getMetadata(window, "nodes");
+
         container = _container;
-        //container.style.position = 'relative';
-        
+        //container.style.position = 'relative';        
         svg = <SVGElement>document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.id = 'node-graph';
         namespace = svg.namespaceURI;
@@ -39,19 +49,67 @@ export module NodeManager {
                 currentInput = undefined;
             }
         };
+
+        
+
+        container.onmousedown = (e) => {
+
+            hideContextMenu();
+
+        }
+
+        container.oncontextmenu = (e) => {
+            e.preventDefault();
+            showContextMenu(e.clientX, e.clientY);
+        }
+    }
+
+    export function showContextMenu(x: number, y: number){
+        if(contextMenu)
+            hideContextMenu();
+
+        contextMenu = document.createElement("div");
+        contextMenu.classList.add("x-node");
+        contextMenu.id = "context-menu";
+        contextMenu.style.left = (x-10)+"px";
+        contextMenu.style.top = (y-10)+"px";
+        contextMenu.setAttribute("title", "Add Node...");
+        contextMenu.onmousedown = (e) => {
+            e.stopPropagation();
+        }
+
+        nodes.forEach(node => {
+            const item = document.createElement("div");
+            item.innerHTML = node.name;
+            item.classList.add("item");
+            contextMenu.appendChild(item);
+            item.onclick = (e) => {
+                addNode(new node.constructor(), x, y);
+                hideContextMenu();
+            };
+        })
+
+        container.appendChild(contextMenu);
+    }
+
+    export function hideContextMenu(){
+        if(contextMenu){
+            container.removeChild(contextMenu);
+            contextMenu = null;
+        }
     }
 
     export function addNode(node: TextureNode, x = 100, y = 100){
-        const existing = nodes.filter(x => x.textureNode === node)[0]
+        const existing = guiNodes.filter(x => x.textureNode === node)[0]
         if(existing)
             return existing;
 
         const gui = new GuiNode(node);
-        nodes.push(gui);
-
-        if(node["__inputs"]){
-            let ctr = 0;
-            node["__inputs"].forEach(inputName => {
+        guiNodes.push(gui);
+        
+        let ctr = 0;
+        ReflectionManager.getMetadata(node, "inputs")
+            .forEach(inputName => {
                 gui.addInput(inputName);
                 if(node[inputName]){
                     const peer = addNode(node[inputName]);
@@ -59,17 +117,15 @@ export module NodeManager {
                 }
                 ctr++;
             });
-        }
+        
+        gui.moveTo(x,y);
         gui.initUI();
-        setTimeout(() => {
-            gui.moveTo(x,y);
-        }, 100);
-
+        
         return gui;
     }
 
     export function update(){
-        nodes.forEach(x => x.updatePreview());
+        guiNodes.forEach(x => x.updatePreview());
     }
 
     export function getNamespace() {

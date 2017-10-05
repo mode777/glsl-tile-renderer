@@ -21,6 +21,11 @@ export class BitmapNode extends TextureNode {
 
     @track private _texture: WebGLTexture;
     @gui() public path = "name";
+    
+    constructor(){
+        super(); 
+        this.name = "Bitmap"
+    }
 
     @gui({name: "reload"})
     public loadTexture(path?: string){
@@ -39,10 +44,6 @@ export class BitmapNode extends TextureNode {
             RenderManager.getContext().deleteTexture(this._texture);
     }
 
-    private constructor(){
-        super(); 
-        this.name = "Bitmap"
-    }
 
     protected refresh(){
         return this._texture;
