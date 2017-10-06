@@ -35,7 +35,6 @@ export class ColorNode extends TextureNode {
 
     protected refresh(){
         this._gl.bindTexture(this._gl.TEXTURE_2D, this._texture);
-        console.log(this.src);
         this._gl.texSubImage2D(this._gl.TEXTURE_2D, 0, 0, 0, 1, 1, this._gl.RGB, this._gl.UNSIGNED_BYTE, new Uint8Array(this.src));
         
         return this._texture;

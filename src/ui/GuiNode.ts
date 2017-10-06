@@ -47,6 +47,13 @@ export class GuiNode {
         this.domElement.appendChild(this.outputDom);
         this.domElement.appendChild(this.thumbnail.element);
         this.domElement.onclick = (e) => GuiManager.showEditor(this.textureNode);
+        this.thumbnail.element.ondblclick = (e) => {
+            this.thumbnail.width > 128 
+            ? this.thumbnail.resize(128,128) 
+            : this.thumbnail.resize(256, 256);
+
+            this.updatePosition();
+        }
 
         this.outputDom.onclick = (e) => {
             const currentInput = NodeManager.getCurrentInput();

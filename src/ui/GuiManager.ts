@@ -1,8 +1,10 @@
 import { TextureNode } from "../nodes/TextureNode";
-import * as dat from "dat-gui";
+//import * as dat from "dat-gui"
+import dat from "dat.gui";
 import { ReflectionManager } from "../model/ReflectionManager";
 
 let gui: dat.GUI;
+console.log(dat);
 
 export module GuiManager {
     
