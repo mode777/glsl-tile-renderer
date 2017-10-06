@@ -6,6 +6,7 @@ import { NodeManager } from "./NodeManager";
 import { TextureNode } from "../nodes/TextureNode";
 import { NodeImage } from "./NodeImage";
 import { GuiManager } from "./GuiManager";
+import { ReflectionManager } from "../model/ReflectionManager";
 
 export class GuiNode {
 
@@ -19,15 +20,23 @@ export class GuiNode {
     private outputDom: HTMLSpanElement;
     private thumbnail: NodeImage
 
-    constructor(public readonly textureNode: TextureNode) {
+    constructor(public readonly textureNode: TextureNode, private name?: string) {
         this.thumbnail = new NodeImage(textureNode, 128,128);
+        this.name = this.name || this.getName();
         this.initDom();
+    }
+
+    private getName(){
+        return ReflectionManager
+            .getMetadata(window, "nodes")
+            .filter(c => c.constructor === this.textureNode.constructor)[0]
+            .name
     }
 
     private initDom() {
         this.domElement = document.createElement('div');
         this.domElement.classList.add('x-node');
-        this.domElement.setAttribute('title', this.textureNode.name);
+        this.domElement.setAttribute('title', this.name);
         this.outputDom = document.createElement('span');
         this.outputDom.classList.add('x-output');
         this.outputDom.textContent = ' ';
@@ -145,13 +154,11 @@ export class GuiNode {
     }
 
     initUI() {
-        const that = this;
-
         $(this.domElement).draggable({
             containment: 'window',
             cancel: '.x-connection, .x-output, .x-input',
-            drag: function (e, ui) {
-                that.updatePosition();
+            drag: (e, ui) => {
+                this.updatePosition();
             }
         });
 

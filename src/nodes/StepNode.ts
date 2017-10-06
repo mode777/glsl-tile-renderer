@@ -5,23 +5,22 @@ import { track } from "../model/Trackable";
 import { input, gui, node, uniform } from "./decorators";
 import { ShaderNode } from "./ShaderNode";
 
-@node()
+@node({name: "Step"})
 export class StepNode extends ShaderNode {
 
-    @track @input({ uniformName: "texture" })
+    @track() @input({ uniformName: "texture" })
     input: TextureNode;
     
-    @track @gui({ max: 1, min: 0, step: 0.01})
+    @track() @gui({ max: 1, min: 0, step: 0.01})
     @uniform() 
     threshold = 0.5;
     
-    @track @gui({ max: 1, min: 0, step: 0.01}) 
+    @track() @gui({ max: 1, min: 0, step: 0.01}) 
     @uniform({ uniformName: "smoothing" }) 
     smooth = 0.05;
 
     constructor(width = 256, height = 256){
         super(require("../../assets/shaders/basic/step.glsl"), width, height);
-        this.name = "Step"
     }    
 
 }

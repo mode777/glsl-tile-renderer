@@ -38,15 +38,6 @@ const gl = RenderManager.getContext();
 
     //https://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
     //https://codepen.io/xgundam05/pen/bNeYbb?sort_col=item_updated_at&
-    // const div = document.createElement("div");
-    // document.body.appendChild(div);
-    // images.forEach(x => { 
-    //     div.appendChild(x.element);
-    //     x.element.onclick = () => {
-    //         preview.node = x.node;
-    //         GuiManager.showEditor(x.node);
-    //     } 
-    // });    
     
     NodeManager.init(document.body);      
     NodeManager.addNode(checkers, 600, 300);

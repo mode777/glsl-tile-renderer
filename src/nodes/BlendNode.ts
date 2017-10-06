@@ -5,26 +5,25 @@ import { track } from "../model/Trackable";
 import { input, gui, node, uniform } from "./decorators";
 import { ShaderNode } from "./ShaderNode";
 
-@node()
+@node({name: "Blend"})
 export class BlendNode extends ShaderNode {
 
-    @track 
+    @track() 
     @input({ uniformName: "texture0" })
     input0: TextureNode;
 
-    @track 
+    @track() 
     @input({ uniformName: "texture1" })
     input1: TextureNode;
 
-    @track @input() 
+    @track() @input() 
     map: TextureNode;
 
-    @track @gui() @uniform()
+    @track() @gui() @uniform()
     threshold = 0.5;
 
     constructor(width = 256, height = 256){
         super(require("../../assets/shaders/basic/blend.glsl"), width, height);
-        this.name = "Blend";
     }          
     
 }

@@ -49,7 +49,6 @@ export function input(options?: InputOptions){
     options = options || {};
     
     return (instance, name) => {
-        console.log("input deco");
         ReflectionManager.addMetadata(instance, "inputs", {
             name: name,
             guiName: options.guiName || name,
@@ -66,7 +65,7 @@ export function node(options?: NodeOptions) {
     options = options || {};
 
     return (constructor: any) => {
-        console.log("class deco");
+        ReflectionManager.addMetadata(constructor, "node", name); 
         ReflectionManager.addMetadata(window, "nodes", { 
             name: options.name || constructor.name, 
             constructor: constructor 

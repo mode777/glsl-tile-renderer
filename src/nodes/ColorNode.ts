@@ -4,19 +4,17 @@ import { RenderManager } from "../gl/index";
 import { track } from "../model/Trackable";
 import { gui, node } from "./decorators";
 
-@node()
+@node({name: "Color"})
 export class ColorNode extends TextureNode {
 
     private _texture: WebGLTexture;
     private _gl = RenderManager.getContext();
     
-    @track @gui({type: 'color'}) 
+    @track() @gui({type: 'color'}) 
     private src = [255,0,0];
 
     constructor(r = 128, g = 128, b = 128){
         super();
-
-        this.name = 'Color';
 
         this.setColor(r,g,b);
         this._texture = twgl.createTexture(this._gl, {

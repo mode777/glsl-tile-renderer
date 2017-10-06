@@ -1,9 +1,11 @@
-export function track(prototype, name){
-    if(!prototype.__tracked){
-        prototype.__tracked = {};
+import { ReflectionManager } from "./ReflectionManager";
+
+export function track() {
+
+    return function(instance, name){
+        ReflectionManager.addMetadata(instance, "tracked", name);
     }
     
-    prototype.__tracked[name] = true;
 }
 
 export abstract class Trackable {
@@ -14,7 +16,7 @@ export abstract class Trackable {
     private _revision = 0;
     private _marked = false;
     
-    private get _tracked() { return this["__tracked"] ? Object.keys(this["__tracked"]) : []; }
+    private get _tracked() { return ReflectionManager.getMetadata(this, "tracked"); }
 
     public get changes(){
         this._changes = this._tracked.filter(x => {

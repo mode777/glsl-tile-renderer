@@ -4,7 +4,7 @@ import { RenderManager } from "../gl/index";
 import { track } from "../model/Trackable";
 import { node, gui } from "./decorators";
 
-@node()
+@node({name: "Bitmap"})
 export class BitmapNode extends TextureNode {
 
     static async createFromUrlAsync(url: string){
@@ -19,12 +19,11 @@ export class BitmapNode extends TextureNode {
         return node;
     }
 
-    @track private _texture: WebGLTexture;
+    @track() private _texture: WebGLTexture;
     @gui() public path = "name";
     
     constructor(){
         super(); 
-        this.name = "Bitmap"
     }
 
     @gui({name: "reload"})

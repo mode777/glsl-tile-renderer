@@ -10,7 +10,7 @@ const sizeConstraints = [
 
 export abstract class ShaderNode extends TextureNode {
     
-    @track protected framebuffer: Framebuffer;  
+    @track() protected framebuffer: Framebuffer;  
     @gui({constraints: sizeConstraints}) protected width;
     @gui({constraints: sizeConstraints}) protected height
 

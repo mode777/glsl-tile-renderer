@@ -78,11 +78,11 @@ export module NodeManager {
 
         nodes.forEach(node => {
             const item = document.createElement("div");
-            item.innerHTML = node.name;
+            item.innerHTML = node.name
             item.classList.add("item");
             contextMenu.appendChild(item);
             item.onclick = (e) => {
-                addNode(new node.constructor(), x, y);
+                addNode(new node.constructor(), x, y, node.name);
                 hideContextMenu();
             };
         })
@@ -97,12 +97,12 @@ export module NodeManager {
         }
     }
 
-    export function addNode(node: TextureNode, x = 100, y = 100){
+    export function addNode(node: TextureNode, x = 100, y = 100, name?: string){
         const existing = guiNodes.filter(x => x.textureNode === node)[0]
         if(existing)
             return existing;
 
-        const gui = new GuiNode(node);
+        const gui = new GuiNode(node, name);
         guiNodes.push(gui);
         
         let ctr = 0;
