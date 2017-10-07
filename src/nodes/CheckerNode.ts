@@ -5,7 +5,7 @@ import { track } from "../model/Trackable";
 import { ShaderNode } from "./ShaderNode";
 import { gui, node, uniform, serialize } from "./decorators";
 
-@node({name: "Checker"})
+@node({name: "Checker", nodeId: "core.checker"})
 export class CheckerNode extends ShaderNode {
 
     @track() @gui({ max: 16, min: 1, step: 1}) 

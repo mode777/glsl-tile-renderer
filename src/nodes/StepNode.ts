@@ -5,7 +5,7 @@ import { track } from "../model/Trackable";
 import { input, gui, node, uniform } from "./decorators";
 import { ShaderNode } from "./ShaderNode";
 
-@node({name: "Step"})
+@node({name: "Step", nodeId: "core.step"})
 export class StepNode extends ShaderNode {
 
     @track() @input({ uniformName: "texture" })

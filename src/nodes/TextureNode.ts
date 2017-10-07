@@ -1,13 +1,14 @@
 import { Trackable } from "../model/Trackable";
+import { createGuid } from "../model/ReflectionManager";
 
 export abstract class TextureNode extends Trackable {
     
+    public _id = createGuid();
+    public name = "";
     protected texture: WebGLTexture;
     
     protected abstract refresh(): WebGLTexture;    
     public abstract destroy(): void;    
-
-    public name = "";
         
     getTexture(){
         if(this.hasChanges){

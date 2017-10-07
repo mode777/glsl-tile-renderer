@@ -5,7 +5,7 @@ import { track } from "../model/Trackable";
 import { input, gui, node, uniform, serialize } from "./decorators";
 import { ShaderNode } from "./ShaderNode";
 
-@node({name: "Blend"})
+@node({name: "Blend", nodeId: "core.blend"})
 export class BlendNode extends ShaderNode {
 
     @track() @input({ uniformName: "texture0" })

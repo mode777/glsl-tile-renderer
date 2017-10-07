@@ -3,6 +3,7 @@ import { TextureNode } from "../nodes/TextureNode";
 import { GuiNode } from "./GuiNode";
 import { ReflectionManager } from "../model/ReflectionManager";
 import { GuiManager } from "./GuiManager";
+import { SerializationManager } from "../serialization/SerializationManager";
 
 interface NodeDescription {
     name: string;
@@ -65,7 +66,34 @@ export module NodeManager {
             e.preventDefault();
             showContextMenu(e.clientX, e.clientY);
         }
+
+        const toolbar = document.createElement("div");
+        toolbar.classList.add("x-toolbar");
+
+        const saveButton = document.createElement("button");
+        saveButton.appendChild(document.createTextNode("Save"));
+        saveButton.onclick = (e) => {
+            const data = SerializationManager.serialize(guiNodes);
+            download("material.json", data);
+        }
+        
+        toolbar.appendChild(saveButton);
+        container.appendChild(toolbar);
     }
+
+    // https://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
+    export function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+      
+        element.style.display = 'none';
+        document.body.appendChild(element);
+      
+        element.click();
+      
+        document.body.removeChild(element);
+      }
 
     export function getCurrent(){
         return current;

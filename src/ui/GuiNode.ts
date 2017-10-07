@@ -15,15 +15,25 @@ export class GuiNode {
     inputs: NodeInput[] = [];
     attachedPaths: NodeInput[] = [];
     connected = false;
-    
     domElement: HTMLDivElement;
+    
     private outputDom: HTMLSpanElement;
     private thumbnail: NodeImage
+    private _x: number;
+    private _y: number;
 
     constructor(public readonly textureNode: TextureNode, private name?: string) {
         this.thumbnail = new NodeImage(textureNode, 128,128);
         this.name = this.name || this.getName();
         this.initDom();
+    }
+
+    public get x(){
+        return this._x;
+    }
+
+    public get y(){
+        return this._y;
     }
 
     private getName(){
@@ -164,6 +174,8 @@ export class GuiNode {
     }
 
     moveTo(x: number, y: number) {
+        this._x = x;
+        this._y = y;
         this.domElement.style.top = y + 'px';
         this.domElement.style.left = x + 'px';
         this.updatePosition();

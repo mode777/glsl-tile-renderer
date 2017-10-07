@@ -2,7 +2,7 @@ import { node, gui, uniform } from "./decorators";
 import { ShaderNode } from "./ShaderNode";
 import { track } from "../model/Trackable";
 
-@node({ name: "RandomNoise" })
+@node({ name: "RandomNoise", nodeId: "core.random" })
 export class RandomNoiseNode extends ShaderNode {
 
     @track() @gui({min: 0, max: 1, step: 0.01}) @uniform()

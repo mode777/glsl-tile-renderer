@@ -8,3 +8,4 @@ export * from "./TextureNode";
 export * from "./RandomNoiseNode";
 export * from "./ColorNode";
 export * from "./RippleNode";
+export * from "./ColorizeNode";

@@ -4,7 +4,7 @@ import { RenderManager } from "../gl/index";
 import { track } from "../model/Trackable";
 import { node, gui, serialize, initialize } from "./decorators";
 
-@node({name: "Bitmap", nodeId: "std.bitmap"})
+@node({name: "Bitmap", nodeId: "core.bitmap"})
 export class BitmapNode extends TextureNode {
 
     static async createFromUrlAsync(url: string){

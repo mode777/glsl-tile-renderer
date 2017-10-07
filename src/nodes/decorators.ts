@@ -28,6 +28,10 @@ export interface uniformOptions {
     uniformName?: string;
 }
 
+export function uniformColorSetter(arr) {
+    return [arr[0]/255,arr[1]/255,arr[2]/255] 
+} 
+
 export function uniform(options?: uniformOptions){
     options = options || {};
 
@@ -43,6 +47,12 @@ export function uniform(options?: uniformOptions){
 export interface InputOptions {
     uniformName?: string;
     guiName?: string;
+}
+
+export interface InputMetadata {
+    name: string;
+    uniformName: string;
+    guiName: string;
 }
 
 export function input(options?: InputOptions){
@@ -62,6 +72,12 @@ export interface NodeOptions {
     nodeId?: string;
 }
 
+export interface NodeMetadata {
+    name: string,
+    nodeId: string,
+    constructor: new () => TextureNode;
+}
+
 export function node(options?: NodeOptions) {
     options = options || {};
 
@@ -77,6 +93,10 @@ export function node(options?: NodeOptions) {
 
 export interface SerializeOptions {
 
+}
+
+export interface SerializeMetadata {
+    name: string;
 }
 
 export function serialize(options?: SerializeOptions){
