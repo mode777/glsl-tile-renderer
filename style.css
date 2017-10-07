@@ -18,6 +18,17 @@
     box-shadow: 2px 2px 10px black;
     white-space: nowrap;
   }
+
+  .x-node.highlight{
+    background-color: #ae4e4e;
+  }
+
+  .x-node.highlight:before{
+    color: #ffd4d4;
+    background-color:#cc6e6e;    
+  }
+
+
   .x-output,
   .x-connection:after{
     position:absolute;

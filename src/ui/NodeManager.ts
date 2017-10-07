@@ -2,6 +2,7 @@ import { NodeInput } from "./NodeInput";
 import { TextureNode } from "../nodes/TextureNode";
 import { GuiNode } from "./GuiNode";
 import { ReflectionManager } from "../model/ReflectionManager";
+import { GuiManager } from "./GuiManager";
 
 interface NodeDescription {
     name: string;
@@ -15,7 +16,7 @@ let namespace: string;
 let currentInput: NodeInput;
 let guiNodes: GuiNode[] = [];
 let nodes: NodeDescription[];
-
+let current: GuiNode;
 
 export module NodeManager {
 
@@ -51,15 +52,31 @@ export module NodeManager {
         };       
 
         container.onmousedown = (e) => {
-
             hideContextMenu();
+        }
 
+        container.onkeyup = (e) => {
+            if(current && e.keyCode === 46){
+                deleteNode(current.textureNode);
+            }
         }
 
         container.oncontextmenu = (e) => {
             e.preventDefault();
             showContextMenu(e.clientX, e.clientY);
         }
+    }
+
+    export function getCurrent(){
+        return current;
+    }
+
+    export function setCurrent(node: GuiNode){
+        if(current)
+            current.setHighlight(false);
+
+        node.setHighlight(true)
+        current = node;
     }
 
     export function showContextMenu(x: number, y: number){
@@ -97,6 +114,43 @@ export module NodeManager {
         }
     }
 
+    export function clearInput(input: NodeInput){
+        if (input.path.hasAttribute('d'))
+            input.path.removeAttribute('d');
+        if (input.node) {
+            input.node.detachInput(input);
+            input.node = undefined;
+        }
+    }
+
+    export function deleteNode(node: TextureNode){      
+        let removeIdx = -1;
+
+        guiNodes.forEach((gui, index) => {            
+            if(gui.textureNode === node){
+                removeIdx = index;
+                gui.inputs.forEach(input => {
+                    gui.detachInput(input);
+                    clearInput(input);
+                })
+            }
+            else {
+                gui.inputs.forEach(input => {
+                    if(input.node && input.node.textureNode === node){
+                        gui.detachInput(input);
+                        clearInput(input);
+                        input.domElement.classList.remove('filled');
+                        input.domElement.classList.add('empty');
+                        gui.textureNode[input.name] = null;
+                    }
+                })
+            }
+        });
+        guiNodes[removeIdx].destroy();
+        guiNodes.splice(removeIdx, 1);
+        GuiManager.closeEditor();
+    }
+
     export function addNode(node: TextureNode, x = 100, y = 100, name?: string){
         const existing = guiNodes.filter(x => x.textureNode === node)[0]
         if(existing)
@@ -123,7 +177,7 @@ export module NodeManager {
     }
 
     export function update(){
-        guiNodes.forEach(x => x.updatePreview());
+        guiNodes.forEach(x => x.update());
     }
 
     export function getNamespace() {

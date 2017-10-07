@@ -2,9 +2,9 @@ import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
 import { RenderManager } from "../gl/index";
 import { track } from "../model/Trackable";
-import { node, gui } from "./decorators";
+import { node, gui, serialize, initialize } from "./decorators";
 
-@node({name: "Bitmap"})
+@node({name: "Bitmap", nodeId: "std.bitmap"})
 export class BitmapNode extends TextureNode {
 
     static async createFromUrlAsync(url: string){
@@ -19,14 +19,21 @@ export class BitmapNode extends TextureNode {
         return node;
     }
 
-    @track() private _texture: WebGLTexture;
-    @gui() public path = "name";
+    @track() 
+    private _texture: WebGLTexture;
     
-    constructor(){
+    @gui() @serialize()
+    public path = "name";
+    
+    constructor(path?: string){
         super(); 
+        if(path){
+            this.path = path;
+            this.loadTexture(); 
+        }
     }
 
-    @gui({name: "reload"})
+    @gui({name: "reload"}) @initialize()
     public loadTexture(path?: string){
         this.path = path || this.path;
 

@@ -59,6 +59,7 @@ export function input(options?: InputOptions){
 
 export interface NodeOptions {
     name?: string;
+    nodeId?: string;
 }
 
 export function node(options?: NodeOptions) {
@@ -67,8 +68,37 @@ export function node(options?: NodeOptions) {
     return (constructor: any) => {
         ReflectionManager.addMetadata(constructor, "node", name); 
         ReflectionManager.addMetadata(window, "nodes", { 
-            name: options.name || constructor.name, 
+            name: options.name || constructor.name,
+            nodeId: options.nodeId || options.name || constructor.name, 
             constructor: constructor 
+        });
+    }
+}
+
+export interface SerializeOptions {
+
+}
+
+export function serialize(options?: SerializeOptions){
+    options = options || {};
+    
+    return (instance, name) => {
+        ReflectionManager.addMetadata(instance, "serialize", {
+            name: name,
+        });
+    }
+}
+
+export interface InitializeOptions {
+
+}
+
+export function initialize(options?: InitializeOptions){
+    options = options || {};
+    
+    return (instance, name) => {
+        ReflectionManager.addMetadata(instance, "initialize", {
+            name: name,
         });
     }
 }

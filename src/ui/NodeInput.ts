@@ -27,12 +27,7 @@ export class NodeInput {
         this.domElement.onclick = (e) => {
             const currentInput = NodeManager.getCurrentInput();
             if (currentInput) {
-                if (currentInput.path.hasAttribute('d'))
-                    currentInput.path.removeAttribute('d');
-                if (currentInput.node) {
-                    currentInput.node.detachInput(currentInput);
-                    currentInput.node = undefined;
-                }
+                NodeManager.clearInput(currentInput);
             }
 
             NodeManager.setCurrentInput(this);

@@ -46,7 +46,10 @@ export class GuiNode {
 
         this.domElement.appendChild(this.outputDom);
         this.domElement.appendChild(this.thumbnail.element);
-        this.domElement.onclick = (e) => GuiManager.showEditor(this.textureNode);
+        this.domElement.onclick = (e) =>  {
+            NodeManager.setCurrent(this);
+            GuiManager.showEditor(this.textureNode); 
+        };
         this.thumbnail.element.ondblclick = (e) => {
             this.thumbnail.width > 128 
             ? this.thumbnail.resize(128,128) 
@@ -80,6 +83,12 @@ export class GuiNode {
         this.domElement.appendChild(input.domElement);
 
         return input;
+    }
+
+    setHighlight(highlight: boolean){
+        highlight 
+            ? this.domElement.classList.add("highlight")
+            : this.domElement.classList.remove("highlight");
     }
 
     detachInput(input: NodeInput) {
@@ -130,7 +139,7 @@ export class GuiNode {
         }
     }
 
-    updatePreview(){
+    update(){
         this.thumbnail.update();
     }
 
@@ -172,6 +181,10 @@ export class GuiNode {
         this.domElement.style.position = 'absolute';
         NodeManager.getContainer().appendChild(this.domElement);
         this.updatePosition();
+    }
+
+    destroy(){
+        NodeManager.getContainer().removeChild(this.domElement);
     }
 
 }

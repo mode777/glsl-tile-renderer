@@ -8,15 +8,22 @@ console.log(dat);
 
 export module GuiManager {
     
-    export function showEditor(node: TextureNode){
+    export function closeEditor(){
         if(gui){
             gui.destroy();
             gui = null;
         }
+    }
+
+    export function showEditor(node: TextureNode){
+        closeEditor();
         gui = new dat.GUI({
             width: 256
         });
         gui.domElement.oncontextmenu = (e) => {
+            e.stopPropagation();
+        }
+        gui.domElement.onkeyup = (e) => {
             e.stopPropagation();
         }
 

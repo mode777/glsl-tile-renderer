@@ -2,7 +2,7 @@ import * as twgl from "twgl.js";
 import { TextureNode } from "./TextureNode";
 import { RenderManager } from "../gl/index";
 import { track } from "../model/Trackable";
-import { gui, node } from "./decorators";
+import { gui, node, serialize } from "./decorators";
 
 @node({name: "Color"})
 export class ColorNode extends TextureNode {
@@ -10,7 +10,7 @@ export class ColorNode extends TextureNode {
     private _texture: WebGLTexture;
     private _gl = RenderManager.getContext();
     
-    @track() @gui({type: 'color'}) 
+    @track() @gui({type: 'color'}) @serialize()
     private src = [255,0,0];
 
     constructor(r = 128, g = 128, b = 128){

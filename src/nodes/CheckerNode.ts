@@ -3,17 +3,17 @@ import { Framebuffer } from "../gl/index";
 import { TextureNode } from "./TextureNode";
 import { track } from "../model/Trackable";
 import { ShaderNode } from "./ShaderNode";
-import { gui, node, uniform } from "./decorators";
+import { gui, node, uniform, serialize } from "./decorators";
 
 @node({name: "Checker"})
 export class CheckerNode extends ShaderNode {
 
     @track() @gui({ max: 16, min: 1, step: 1}) 
-    @uniform() 
+    @uniform() @serialize()
     tileX = 1;
     
     @track() @gui({ max: 16, min: 1, step: 1}) 
-    @uniform() 
+    @uniform() @serialize()
     tileY = 1;
 
     constructor(width = 256, height = 256){
