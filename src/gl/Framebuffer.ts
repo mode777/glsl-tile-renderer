@@ -1,12 +1,15 @@
 import * as twgl from "twgl.js";
 import { RenderManager } from "./index";
 
+const defaultVs = require("../../assets/shaders/basic/texture_vs.glsl");
+
 export class Framebuffer {
 
     private gl: WebGLRenderingContext = RenderManager.getContext();
     private programInfo: twgl.ProgramInfo;
     private bufferInfo: twgl.BufferInfo;
     private framebufferInfo: twgl.FramebufferInfo;
+    private vs = defaultVs;
     
     public readonly uniforms: any = {};
     
@@ -14,9 +17,8 @@ export class Framebuffer {
         private fs: string, 
         public readonly width = 512,
         public readonly height = 512
-    ){        
-        const vs = require("../../assets/shaders/basic/texture_vs.glsl");
-        this.programInfo = twgl.createProgramInfo(this.gl, [vs, fs]);
+    ){                
+        this.setShader(this.fs, this.vs);
         this.bufferInfo = twgl.createBufferInfoFromArrays(this.gl, {
             position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
             texcoord: [ 0,0, 1,0, 0,1, 0,1, 1,0, 1,1  ]            
@@ -28,6 +30,13 @@ export class Framebuffer {
             }
         ], this.width, this.height);
         twgl.bindFramebufferInfo(this.gl);  
+    }
+    
+    setShader(fs: string, vs = defaultVs){
+        
+        this.vs = vs;
+        this.fs = fs;
+        this.programInfo = RenderManager.getShader(this.vs, this.fs);
     }
 
     get texture() {

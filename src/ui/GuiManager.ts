@@ -1,7 +1,9 @@
 import { TextureNode } from "../nodes/TextureNode";
 //import * as dat from "dat-gui"
-import dat from "dat.gui";
+//import  "dat.gui/build/dat.gui.min";
 import { ReflectionManager } from "../model/ReflectionManager";
+
+const dat = require("dat.gui/build/dat.gui.min");
 
 let gui: dat.GUI;
 console.log(dat);

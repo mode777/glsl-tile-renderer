@@ -53,9 +53,13 @@ NodeManager.init(document.body);
     const checker = new CheckerNode();
     const ripple = new RippleNode()
     ripple.input = checker;
+    const blend = new BlendNode();
+    blend.input0 = ripple;
+    blend.input1 = checker;
 
-    NodeManager.addNode(checker, 300, 100);
-    NodeManager.addNode(ripple, 100, 100);
+    NodeManager.addNode(checker, 600, 100);
+    NodeManager.addNode(ripple, 400, 100);
+    NodeManager.addNode(blend, 200, 100);
 
 
     RenderManager.runLoop(()=> {        

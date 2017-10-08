@@ -48,7 +48,7 @@ export module SerializationManager {
         const inputsResults = {}; 
         const serializeResults = {}; 
 
-        inputs.forEach(x => inputsResults[x.name] = node[x.name]._id);
+        inputs.forEach(x => inputsResults[x.name] = node[x.name] ? node[x.name]._id : null);
         serialize.forEach(x => serializeResults[x.name] = node[x.name]);
 
         const result: JsonNode = {

@@ -1,9 +1,11 @@
 import * as twgl from "twgl.js";
+import { Helpers } from "../model/Helpers";
 
 let gl: WebGLRenderingContext;
 let program: twgl.ProgramInfo;
 let buffer: twgl.BufferInfo;
 let texEmpty: WebGLTexture;
+const shaderCache: {[key:string]: twgl.ProgramInfo} = {}
 
 export module RenderManager {
     
@@ -21,8 +23,8 @@ export module RenderManager {
             texcoord: [ 0,  1,    1,  1,     0, 0,     0, 0,    1,  1,    1, 0   ]
         });
         texEmpty = twgl.createTexture(gl, {
-            format:gl.ALPHA,
-            src: [128],
+            format:gl.RGB,
+            src: [255,255,255],
             width: 1,
             height: 1
         });
@@ -55,5 +57,13 @@ export module RenderManager {
 
     export function getDefaultTexture(){
         return texEmpty;
+    }
+
+    export function getShader(vs: string, fs: string) {
+        const hash = Helpers.hash(vs+fs);
+        if(!shaderCache[hash]){
+            shaderCache[hash] = twgl.createProgramInfo(RenderManager.getContext(), [vs, fs]);
+        }
+        return shaderCache[hash];
     }
 }

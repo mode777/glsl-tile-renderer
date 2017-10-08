@@ -13,7 +13,11 @@ export class StepNode extends ShaderNode {
     
     @track() @gui({ max: 1, min: 0, step: 0.01})
     @uniform() 
-    threshold = 0.5;
+    threshold1 = 0.5;
+
+    @track() @gui({ max: 1, min: 0, step: 0.01})
+    @uniform() 
+    threshold2 = 1;
     
     @track() @gui({ max: 1, min: 0, step: 0.01}) 
     @uniform({ uniformName: "smoothing" }) 
