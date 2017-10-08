@@ -142,6 +142,7 @@ declare module "twgl.js" {
         wrapR?: number;
         minLod?: number;
         maxLod?: number;
+        level?: number,
         baseLevel?: number;
         maxLevel?: number;
         unpackAlignment?: number;

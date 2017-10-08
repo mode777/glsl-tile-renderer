@@ -32,6 +32,10 @@ export function uniformColorSetter(arr) {
     return [arr[0]/255,arr[1]/255,arr[2]/255] 
 } 
 
+export const sizeConstraints = [
+    4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048
+]
+
 export function uniform(options?: uniformOptions){
     options = options || {};
 

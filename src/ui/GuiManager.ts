@@ -44,7 +44,8 @@ export module GuiManager {
                 controller.name(editor.options.name);
             if(editor.options.constraints)
                 controller.options(editor.options.constraints)
-            controller.onChange(editor.options.onChange);
+            if(editor.options.onChange)
+                controller.onChange(() => editor.options.onChange.call(node) );
         });
         
     }

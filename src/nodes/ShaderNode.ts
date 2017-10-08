@@ -1,18 +1,14 @@
 import { track } from "../model/Trackable";
 import { Framebuffer, RenderManager } from "../gl/index";
 import { TextureNode } from "./TextureNode";
-import { gui } from "./decorators";
+import { gui, sizeConstraints } from "./decorators";
 import { ReflectionManager } from "../model/ReflectionManager";
-
-const sizeConstraints = [
-    4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048
-]
 
 export abstract class ShaderNode extends TextureNode {
     
     @track() protected framebuffer: Framebuffer;  
     @gui({constraints: sizeConstraints}) protected width;
-    @gui({constraints: sizeConstraints}) protected height
+    @gui({constraints: sizeConstraints}) protected height;
 
     constructor(
         private shader: string, 

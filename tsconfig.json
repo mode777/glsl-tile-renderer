@@ -7,7 +7,7 @@
 		"importHelpers": true,
 		"downlevelIteration": true,
 		"noImplicitAny": false,
-		"noImplicitThis": true,
+		"noImplicitThis": false,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true
 	}
