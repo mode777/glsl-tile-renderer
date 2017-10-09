@@ -23,7 +23,7 @@ export class BitmapNode extends TextureNode {
     private _texture: WebGLTexture;
     
     @gui() @serialize()
-    public path = "name";
+    public path = "assets/textures/test2.png";
     
     constructor(path?: string){
         super(); 

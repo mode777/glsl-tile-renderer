@@ -12,3 +12,5 @@ export * from "./ColorizeNode";
 export * from "./AlphaNode";
 export * from "./SvgNode";
 export * from "./TextNode";
+export * from "./ColorKeyNode";
+export * from "./HslNode";
