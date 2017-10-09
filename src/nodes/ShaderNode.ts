@@ -7,8 +7,8 @@ import { ReflectionManager } from "../model/ReflectionManager";
 export abstract class ShaderNode extends TextureNode {
     
     @track() protected framebuffer: Framebuffer;  
-    @gui({constraints: sizeConstraints}) protected width;
-    @gui({constraints: sizeConstraints}) protected height;
+    @track() @gui({constraints: sizeConstraints}) protected width;
+    @track() @gui({constraints: sizeConstraints}) protected height;
 
     constructor(
         private shader: string, 
@@ -21,7 +21,7 @@ export abstract class ShaderNode extends TextureNode {
         this.framebuffer = new Framebuffer(shader, width, height);
     }
 
-    @gui()
+    //@gui()
     public resize(width?: number, height?: number){
         this.width = width || this.width;
         this.height = height || this.height;
@@ -35,6 +35,11 @@ export abstract class ShaderNode extends TextureNode {
     }
 
     protected refresh(){
+        const changes = this.changes;
+        if(changes.indexOf("width") !== -1 || changes.indexOf("height") !== -1){
+            this.resize();
+        }
+
         const uniforms = this.framebuffer.uniforms;
         ReflectionManager.getMetadata(this, "inputs").forEach(x => {
             uniforms[x.uniformName] = this[x.name] ? this[x.name].getTexture() : RenderManager.getDefaultTexture();

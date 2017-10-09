@@ -8,6 +8,11 @@ const canvg = require("canvg-browser");
 @node({name: "SVG", nodeId: "core.svg"})
 export class SvgNode extends TextureNode {
 
+    private readonly canvas = <HTMLCanvasElement>document.createElement("canvas");
+
+    @track() @gui({constraints: sizeConstraints}) protected width;
+    @track() @gui({constraints: sizeConstraints}) protected height;
+
     @track() 
     private _texture: WebGLTexture;
     
@@ -16,23 +21,30 @@ export class SvgNode extends TextureNode {
     
     constructor(path?: string, width = 256, height = 256){
         super(); 
-        
+        this.width = width;
+        this.height = height;
         if(path){
             this.path = path;
-            this.loadTexture(); 
+            this.render(); 
         }
     }
 
     @gui({name: "reload"}) @initialize()
-    public loadTexture(path?: string){
+    public render(path?: string){
         this.path = path || this.path;
         
-        var canvas = <HTMLCanvasElement>document.createElement("canvas");
-        canvg(canvas, this.path);
-        console.log(canvas);
-
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        
+        canvg(this.canvas, this.path, {
+            ignoreDimensions: true,
+            scaleWidth: this.width,
+            scaleHeight: this.height
+        });
+        
         const tex = twgl.createTexture(RenderManager.getContext(), {
-            src: canvas
+            src: this.canvas,
+            min: RenderManager.getContext().LINEAR
         });
         
         this.destroy();
@@ -46,6 +58,10 @@ export class SvgNode extends TextureNode {
     }
 
     protected refresh(){
+        if(this.changes.indexOf("width") !== -1 || this.changes.indexOf("height") !== -1){
+            this.render();
+        }
+
         return this._texture;
     }
 
