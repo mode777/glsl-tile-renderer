@@ -24,7 +24,7 @@ export class EmbossNode extends ShaderNode {
     strength = 1;
 
     constructor(width = 256, height = 256){
-        super(require("../../assets/shaders/basic/step.glsl"), width, height);
+        super(require("../../assets/shaders/basic/emboss.glsl"), width, height);
     }    
 
 }
