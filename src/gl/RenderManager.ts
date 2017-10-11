@@ -1,11 +1,13 @@
 import * as twgl from "twgl.js";
 import { Helpers } from "../model/Helpers";
+import { mat4 } from "gl-matrix";
 
 let gl: WebGLRenderingContext;
 let program: twgl.ProgramInfo;
 let buffer: twgl.BufferInfo;
 let texEmpty: WebGLTexture;
 const shaderCache: {[key:string]: twgl.ProgramInfo} = {}
+const identity = mat4.identity(mat4.create());
 
 export module RenderManager {
     
@@ -38,7 +40,7 @@ export module RenderManager {
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);        
         gl.useProgram(program.program);
         twgl.setBuffersAndAttributes(gl, program, buffer);
-        twgl.setUniforms(program, { texture: texture });
+        twgl.setUniforms(program, { texture: texture, matrix: identity });
         twgl.drawBufferInfo(gl, buffer);
     }
 

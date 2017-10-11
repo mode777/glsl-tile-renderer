@@ -8,6 +8,22 @@ import * as twgl from "twgl.js";
 
 export abstract class ShaderNode extends TextureNode {
     
+    // transform
+    private readonly _matrix = mat4.create();
+    private readonly _quat = quat.create();
+    private readonly _trans = vec3.fromValues(0,0,0);
+    private readonly _origin = vec3.fromValues(0,0,0);
+    private readonly _scale = vec3.fromValues(1,1,1);
+    private readonly _axis = vec3.fromValues(0,0,1);
+    
+    @track() @gui({min: 0, max: 1, step: 0.001, name: "angle"}) protected t_angle = 0;
+    @track() @gui({min: 0.1, max: 16, step: 0.1, name: "scale X"}) protected t_sx = 1;
+    @track() @gui({min: 0.1, max: 16, step: 0.1, name: "scale Y"}) protected t_sy = 1;
+    @track() @gui({min: 0, max: 1.0, step: 0.01, name: "X"}) protected t_x = 0;
+    @track() @gui({min: 0, max: 1.0, step: 0.01, name: "Y"}) protected t_y = 0;
+    @track() @gui({min: 0, max: 1.0, step: 0.01, name: "origin X"}) protected t_ox = 0.5;
+    @track() @gui({min: 0, max: 1.0, step: 0.01, name: "origin Y"}) protected t_oy = 0.5;
+
     @track() protected framebuffer: Framebuffer;  
     @track() @gui({constraints: sizeConstraints}) protected width;
     @track() @gui({constraints: sizeConstraints}) protected height;
@@ -21,6 +37,17 @@ export abstract class ShaderNode extends TextureNode {
         this.width = width;
         this.height = height;
         this.framebuffer = new Framebuffer(shader, width, height);
+    }
+
+    @gui()
+    public resetTransform(){
+        this.t_angle = 0;
+        this.t_sx = 1;
+        this.t_sy = 1;
+        this.t_x = 0;
+        this.t_y = 0;
+        this.t_ox = 0.5;
+        this.t_oy = 0.5;
     }
 
     //@gui()
@@ -50,18 +77,18 @@ export abstract class ShaderNode extends TextureNode {
             uniforms[x.uniformName] = x.setter.call(this, this[x.name]);
         });           
 
-        const matrix = mat4.create();
-        const _quat = quat.create();
-        const trans = vec3.fromValues(0,0,0);
-        const origin = vec3.fromValues(0,0,0);
-        const scale = vec3.fromValues(1,1,1);
-        const axis = vec3.fromValues(0,0,1);
-        const angle = 0;
+
         
-        quat.setAxisAngle(_quat, axis, angle);
-        mat4.fromRotationTranslationScaleOrigin(matrix, _quat, trans, scale, origin);
-        const ident = mat4.identity(mat4.create());
-        uniforms.matrix = ident;
+        quat.setAxisAngle(this._quat, this._axis, this.t_angle * (Math.PI * 2));
+        this._scale[0] = this.t_sx;
+        this._scale[1] = this.t_sy;
+        this._trans[0] = this.t_x;
+        this._trans[1] = this.t_y;
+        this._origin[0] = this.t_ox;
+        this._origin[1] = this.t_oy;
+        mat4.fromRotationTranslationScaleOrigin(this._matrix, this._quat, this._trans, this._scale, this._origin);
+        //const ident = mat4.identity(mat4.create());
+        uniforms.matrix = this._matrix;
 
         
         this.framebuffer.refresh()
