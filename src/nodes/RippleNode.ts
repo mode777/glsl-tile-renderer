@@ -13,7 +13,7 @@ export class RippleNode extends ShaderNode {
     
     @track() @gui({ max: 50, min: 0.1, step: 0.01}) 
     @uniform() @serialize()
-    t_sx = 1.0;
+    scaleX = 1.0;
     
     @track() @gui({ max: .5, min: 0.0001, step: 0.0001}) 
     @uniform() @serialize() 
@@ -21,7 +21,7 @@ export class RippleNode extends ShaderNode {
     
     @track() @gui({ max: 50, min: 0.1, step: 0.01}) 
     @uniform() @serialize() 
-    t_sy = 1.0;
+    scaleY = 1.0;
 
     @track() @gui({ max: .5, min: 0.0001, step: 0.0001}) 
     @uniform() @serialize() 
