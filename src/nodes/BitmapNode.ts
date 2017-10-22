@@ -37,9 +37,11 @@ export class BitmapNode extends TextureNode {
     public loadTexture(path?: string){
         this.path = path || this.path;
 
-        twgl.createTexture(RenderManager.getContext(), {
+        const gl = RenderManager.getContext();
+
+        twgl.createTexture(gl, {
             src: this.path,
-            min: RenderManager.getContext().LINEAR
+            minMag: gl.NEAREST
         }, (err, tex) => {
             this.destroy();
             this._texture = tex;

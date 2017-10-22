@@ -13,6 +13,7 @@ import { NodeManager } from "./ui/NodeManager";
 import { GuiNode } from "./ui/GuiNode";
 import { ReflectionManager } from "./model/ReflectionManager";
 import { RippleNode } from "./nodes/index";
+import { TilesNode } from "./nodes/TilesNode";
 
 RenderManager.init((<HTMLCanvasElement>document.getElementById("canvas")));
 const gl = RenderManager.getContext();
@@ -50,17 +51,24 @@ NodeManager.init(document.body);
     // NodeManager.addNode(blend, 100, 200);
     // NodeManager.addNode(color, 100, 400);
 
-    const checker = new CheckerNode();
-    const ripple = new RippleNode()
-    ripple.input = checker;
-    const blend = new BlendNode();
-    blend.input0 = ripple;
-    blend.input1 = checker;
+    // const checker = new CheckerNode();
+    // const ripple = new RippleNode()
+    // ripple.input = checker;
+    // const blend = new BlendNode();
+    // blend.input0 = ripple;
+    // blend.input1 = checker;
 
-    NodeManager.addNode(checker, 600, 100);
-    NodeManager.addNode(ripple, 400, 100);
-    NodeManager.addNode(blend, 200, 100);
+    // NodeManager.addNode(checker, 600, 100);
+    // NodeManager.addNode(ripple, 400, 100);
+    // NodeManager.addNode(blend, 200, 100);
 
+    const tiles = new TilesNode();
+    const bitmap = new BitmapNode("assets/textures/tileset.png"); 
+
+    tiles.input = bitmap;
+
+    NodeManager.addNode(bitmap, 300, 100);
+    NodeManager.addNode(tiles, 100, 100);
 
     RenderManager.runLoop(()=> {        
         NodeManager.update();       

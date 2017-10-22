@@ -15,3 +15,4 @@ export * from "./TextNode";
 export * from "./ColorKeyNode";
 export * from "./HslNode";
 export * from "./EmbossNode";
+export * from "./TilesNode"
