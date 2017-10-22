@@ -41,7 +41,7 @@ export class BitmapNode extends TextureNode {
 
         twgl.createTexture(gl, {
             src: this.path,
-            minMag: gl.NEAREST
+            minMag: gl.LINEAR
         }, (err, tex) => {
             this.destroy();
             this._texture = tex;
