@@ -23,6 +23,7 @@ export class Tilemap {
     private texture: WebGLTexture;
     private data: Uint8Array;
     private scale: number[];
+    //private ortho = mat4.ortho(mat4.create(), 0, this.gl.canvas.width, this.gl.canvas.height, 0, -2, 2);
 
     //private matrix: mat4;
     public readonly transform = new Transform2d(); 

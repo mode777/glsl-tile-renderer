@@ -5,7 +5,8 @@ export interface TilesetOptions {
     tileheight: number,
     imageheight: number,
     imagewidth: number,
-    image: string
+    image: string,
+    interpolation?: number
 }
 
 export class Tileset {
@@ -22,7 +23,7 @@ export class Tileset {
         this.tileSize = [options.tilewidth, options.tileheight];
         this.texture = twgl.createTexture(gl, {
             src: options.image,
-            minMag: gl.LINEAR
+            minMag: options.interpolation || gl.LINEAR
         });
     }
 

@@ -19,7 +19,8 @@ import { Tilemap } from "./gl/Tilemap";
 
     const map = require("../assets/maps/map.json");
     map.tilesets[0].image = "../assets/textures/tileset.png";
-    
+    map.tilesets[0].interploation = gl.NEAREST;
+
     const tileset = new Tileset(gl, map.tilesets[0]);
     const tilemap = new Tilemap(gl, tileset, map.layers[0]);
     const t = tilemap.transform;
