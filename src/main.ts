@@ -32,8 +32,6 @@ import { Tilemap } from "./gl/Tilemap";
     tilemap.transform.sx = 0.5
     tilemap.transform.sy = 0.5
 
-
-
     const render = () => {
         stats.begin();
         t.x += 0.001;
