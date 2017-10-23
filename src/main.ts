@@ -1,5 +1,5 @@
 import * as twgl from "twgl.js";
-import * as dat from "dat-gui";
+import Stats = require("stats.js");
 
 import { Tileset } from "./gl/Tileset";
 import { Tilemap } from "./gl/Tilemap";
@@ -9,14 +9,13 @@ import { Tilemap } from "./gl/Tilemap";
 
 (async function main(){    
 
-    //const tiles = new TilesNode();
-    //const bitmap = new BitmapNode("assets/textures/tileset.png"); 
-
-    //tiles.input = bitmap;
+    var stats = new Stats();
+    stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild( stats.dom );
 
     const canvas = <HTMLCanvasElement>document.getElementById("canvas"); 
     const gl = canvas.getContext("webgl");
-    twgl.resizeCanvasToDisplaySize(canvas);
+    //twgl.resizeCanvasToDisplaySize(canvas);
 
     const map = require("../assets/maps/map.json");
     map.tilesets[0].image = "../assets/textures/tileset.png";
@@ -33,16 +32,17 @@ import { Tilemap } from "./gl/Tilemap";
 
 
     const render = () => {
-
-        //t.x += 0.005;
-        //t.y += 0.005;
+        stats.begin();
+        t.x += 0.005;
+        t.y += 0.005;
         //t.sx -= 0.05;
         //t.sy -= 0.05;
-        t.rot += 0.05;
+        //t.rot += 0.05;
 
         tilemap.render();
 
         requestAnimationFrame(render);
+        stats.end();
     }
 
     render();

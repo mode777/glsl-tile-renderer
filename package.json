@@ -36,7 +36,7 @@
     "@types/gl-matrix": "^2.2.34",
     "@types/node": "^8.0.8",
     "@types/pako": "^1.0.0",
-    "@types/stats": "^0.16.30",
+    "@types/stats": "^0.16.30",    
     "binary-loader": "0.0.1",
     "raw-loader": "^0.5.1",
     "spectorjs": "^0.2.3",
