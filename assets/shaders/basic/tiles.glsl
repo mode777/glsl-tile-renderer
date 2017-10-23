@@ -13,10 +13,17 @@ void main() {
     
     vec2 tile = 1./map_size;
     
-	vec2 coord = floor(texture2D(texture, v_texcoord).rg * 255.);
-    vec2 local_uv = (fract(v_texcoord * map_size) * tile) * ((tile_size-1.) / tile_size);
-    vec2 local_offset = tile * coord - (511./512.);
+	vec2 coord = floor(texture2D(texture, v_texcoord).rg * 255. + .1);
+    vec2 frac = mod(fract(v_texcoord * map_size) + 1./128.,1.0);
     
-    vec3 result = texture2D(tileset, local_uv + local_offset).rgb;
+    vec2 local_uv = (frac * tile);
+    //local_uv *= ((tile_size-1.) / tile_size); //use for linear
+    local_uv *= ((tile_size-.125) / tile_size); //use for nearest
+
+    vec2 local_offset = tile * coord;
+    //local_offset += + 1./512.; //use for linear
+    local_offset += 1./4096.; //use for nearest
+    
+    vec3 result = texture2D(tileset, local_offset + local_uv).rgb;
 	gl_FragColor = vec4(result , 1.0);
 }
