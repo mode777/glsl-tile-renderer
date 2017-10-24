@@ -27,18 +27,18 @@ import { Tilemap } from "./gl/Tilemap";
 
     t.ox = 0.5;
     t.oy = 0.5;
-    //tilemap.transform.sx = 0.0525
-    //tilemap.transform.sy = 0.0525
-    tilemap.transform.sx = 0.5
-    tilemap.transform.sy = 0.5
+    tilemap.transform.sx = 0.0525
+    tilemap.transform.sy = 0.0525
+    //tilemap.transform.sx = 0.5
+    //tilemap.transform.sy = 0.5
 
     const render = () => {
         stats.begin();
-        t.x += 0.001;
-        t.y += 0.001;
+        t.x += 0.0001;
+        t.y += 0.0001;
         //t.sx -= 0.05;
         //t.sy -= 0.05;
-        t.rot += 0.005;
+        //t.rot += 0.005;
 
         tilemap.render();
 
