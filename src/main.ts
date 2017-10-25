@@ -19,7 +19,7 @@ import { Tilemap } from "./gl/Tilemap";
 
     const map = require("../assets/maps/map.json");
     map.tilesets[0].image = "../assets/textures/tileset.png";
-    map.tilesets[0].interpolation = gl.NEAREST;
+    map.tilesets[0].interpolation = gl.LINEAR
 
     const tileset = new Tileset(gl, map.tilesets[0]);
     const tilemap = new Tilemap(gl, tileset, map.layers[0]);
@@ -32,8 +32,8 @@ import { Tilemap } from "./gl/Tilemap";
     t.oy = 0.5;
     tilemap.transform.sx = 0.0525
     tilemap.transform.sy = 0.0525
-    tilemap.transform.sx = 1.0;
-    tilemap.transform.sy = 1.0;
+    //tilemap.transform.sx = 1.0;
+    //tilemap.transform.sy = 1.0;
 
     const render = () => {
         stats.begin();
@@ -41,10 +41,12 @@ import { Tilemap } from "./gl/Tilemap";
         //t.sy -= 0.05;
         //t.rot += 0.005;
 
-        x += 0.5;
-        y += 0.5;
-        t.x = Math.floor(x)/256;
-        t.y = Math.floor(y)/256;
+        t.x += 0.0001;
+        t.y += 0.0001;
+        //x += 0.5;
+        //y += 0.5;
+        //t.x = Math.floor(x)/256;
+        //t.y = Math.floor(y)/256;
     
         tilemap.render();
 

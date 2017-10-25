@@ -16,7 +16,7 @@ void main() {
 	vec2 coord = floor(texture2D(texture, v_texcoord).rg * 255. + 0.1);
     vec2 frac = mod(fract(v_texcoord * map_size), 1.);
     
-    frac = clamp(frac, 1./16., 1.-1./16.);
+    frac = clamp(frac, 1./32., 1.-1./32.);
     
     vec2 local_uv = (frac * tile);
     //local_uv *= ((tile_size-1.) / tile_size); //use for linear
