@@ -13,7 +13,6 @@
   "author": "Alexander Klingenbeck",
   "license": "MIT",
   "dependencies": {
-    "@types/dot": "^1.1.2",
     "canvg-browser": "^1.0.0",
     "css-loader": "^0.28.7",
     "dat-gui": "^0.5.0",
@@ -33,6 +32,7 @@
     "twgl.js": "^3.4.0"
   },
   "devDependencies": {
+    "@types/dot": "^1.1.2",
     "@types/dat-gui": "^0.6.3",
     "@types/es6-promise": "0.0.32",
     "@types/gl-matrix": "^2.2.34",
