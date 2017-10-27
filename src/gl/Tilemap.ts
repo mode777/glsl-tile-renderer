@@ -4,13 +4,21 @@ import { Tileset } from "./Tileset";
 import { Transform2d } from "./Transform";
 import * as dot from "dot";
 
+dot.templateSettings.strip = false;
+
 const VS = require("../../assets/shaders/basic/texture_vs.glsl");
-const FS = require("../../assets/shaders/basic/tiles.glsl");
+const FS_TEMPLATE = dot.template(require("../../assets/shaders/basic/tiles.glsl"), dot.templateSettings);
 const COMP_COLOR = 3;
 
 let PROGRAM: twgl.ProgramInfo; 
 
 function createShader(gl: WebGLRenderingContext, tileSize: number[], mapSize: number[]){
+    const FS = FS_TEMPLATE({
+        map_size: mapSize,
+        tile_size: tileSize
+    });
+    console.log(FS)
+    
     PROGRAM = twgl.createProgramInfo(gl, [VS, FS]);
 }
 
@@ -65,8 +73,6 @@ export class Tilemap {
 
         this.uniforms.texture = this.texture;
         this.uniforms.tileset = this.tileset.texture;
-        this.uniforms.map_size = this.size;
-        this.uniforms.tile_size = this.tileset.tileSize;
         this.uniforms.matrix = this.transform.matrix;
         this.uniforms.scale = scale;
     }
@@ -92,13 +98,14 @@ export class Tilemap {
 
     private createData(data: number[]){
         const bytes = new Uint8Array(this.size[0] * this.size[1] * COMP_COLOR)
-
         data.forEach((id, index) => {
             const offset = index * COMP_COLOR;
             const tid = id-1;
-            bytes[offset] = tid % this.size[0];
-            bytes[offset+1] = Math.floor(tid / this.size[0]);
+            //console.log(tid)
+            bytes[offset] = tid % this.tileset.tileSize[0];
+            bytes[offset+1] = Math.floor(tid / this.tileset.tileSize[0]);
         });
+        console.log(bytes)
 
         this.data = bytes;
     }
