@@ -1,4 +1,4 @@
-precision highp float;
+precision mediump float;
 
 uniform sampler2D texture;
 uniform sampler2D tileset;
@@ -12,10 +12,15 @@ varying vec2 v_texcoord;
 void main() {
     
     vec2 tile = 1./map_size;
+    vec2 uv = v_texcoord;
+
+    vec2 fac = map_size * tile_size * 8.;
+
+    uv = floor(v_texcoord * fac) / fac;
     
-	vec2 coord = floor(texture2D(texture, v_texcoord).rg * 255. + 0.1);
-    vec2 frac = mod(fract(v_texcoord * map_size), 1.);
-    
+	vec2 coord = floor(texture2D(texture, uv).rg * 255. + 0.1);
+    vec2 frac = mod(fract(uv * map_size), 1.);
+        
     frac = clamp(frac, 1./32., 1.-1./32.);
     
     vec2 local_uv = (frac * tile);
