@@ -2,12 +2,17 @@ import * as twgl from "twgl.js";
 import { vec4, mat4, vec3, quat } from "gl-matrix";
 import { Tileset } from "./Tileset";
 import { Transform2d } from "./Transform";
+import * as dot from "dot";
 
 const VS = require("../../assets/shaders/basic/texture_vs.glsl");
 const FS = require("../../assets/shaders/basic/tiles.glsl");
 const COMP_COLOR = 3;
 
 let PROGRAM: twgl.ProgramInfo; 
+
+function createShader(gl: WebGLRenderingContext, tileSize: number[], mapSize: number[]){
+    PROGRAM = twgl.createProgramInfo(gl, [VS, FS]);
+}
 
 export interface TilemapOptions {
     width: number,
@@ -42,10 +47,11 @@ export class Tilemap {
         private tileset: Tileset,
         private options: TilemapOptions
     ){
-        if(!PROGRAM)
-            PROGRAM = twgl.createProgramInfo(gl, [VS, FS]);
-
         this.size = [options.width, options.height];
+
+        if(!PROGRAM)
+            createShader(gl, this.size, this.tileset.tileSize);
+
 
         this.createBufferInfo();
         this.createData(options.data);
