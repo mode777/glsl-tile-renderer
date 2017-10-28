@@ -10,18 +10,6 @@ const VS = require("../../assets/shaders/basic/texture_vs.glsl");
 const FS_TEMPLATE = dot.template(require("../../assets/shaders/basic/tiles.glsl"), dot.templateSettings);
 const COMP_COLOR = 3;
 
-let PROGRAM: twgl.ProgramInfo; 
-
-function createShader(gl: WebGLRenderingContext, tileSize: number[], mapSize: number[]){
-    const FS = FS_TEMPLATE({
-        map_size: mapSize,
-        tile_size: tileSize
-    });
-    console.log(FS)
-    
-    PROGRAM = twgl.createProgramInfo(gl, [VS, FS]);
-}
-
 export interface TilemapOptions {
     width: number,
     height: number,
@@ -33,13 +21,14 @@ export class Tilemap {
     public readonly size: number[];
 
     private bufferInfo: twgl.BufferInfo;
+    private program: twgl.ProgramInfo;
     private texture: WebGLTexture;
     private data: Uint8Array;
     private scale: number[];
     //private ortho = mat4.ortho(mat4.create(), 0, this.gl.canvas.width, this.gl.canvas.height, 0, -2, 2);
 
     //private matrix: mat4;
-    public readonly transform = new Transform2d(); 
+    public transform = new Transform2d(); 
 
     private uniforms = {
         texture:  null,
@@ -57,8 +46,7 @@ export class Tilemap {
     ){
         this.size = [options.width, options.height];
 
-        if(!PROGRAM)
-            createShader(gl, this.size, this.tileset.tileSize);
+        this.createShader(gl, this.size, this.tileset.tileSize, this.tileset.size);
 
 
         this.createBufferInfo();
@@ -84,6 +72,17 @@ export class Tilemap {
         });
     }
 
+    private createShader(gl: WebGLRenderingContext, mapSize: number[], tileSize: number[], setSize: number[]){
+        const FS = FS_TEMPLATE({
+            map_size: mapSize,
+            tile_size: tileSize,
+            set_size: setSize
+        });
+        console.log(FS)
+        
+        this.program = twgl.createProgramInfo(gl, [VS, FS]);
+    }
+
     private createTexture(){
         this.texture = twgl.createTexture(this.gl, {
             width: this.size[0],
@@ -102,8 +101,8 @@ export class Tilemap {
             const offset = index * COMP_COLOR;
             const tid = id-1;
             //console.log(tid)
-            bytes[offset] = tid % this.tileset.tileSize[0];
-            bytes[offset+1] = Math.floor(tid / this.tileset.tileSize[0]);
+            bytes[offset] = tid % this.tileset.size[0];
+            bytes[offset+1] = Math.floor(tid / this.tileset.size[0]);
         });
         console.log(bytes)
 
@@ -118,9 +117,9 @@ export class Tilemap {
     public render(){
         this.updateUniforms();
 
-        this.gl.useProgram(PROGRAM.program);
-        twgl.setBuffersAndAttributes(this.gl, PROGRAM, this.bufferInfo);
-        twgl.setUniforms(PROGRAM, this.uniforms);
+        this.gl.useProgram(this.program.program);
+        twgl.setBuffersAndAttributes(this.gl, this.program, this.bufferInfo);
+        twgl.setUniforms(this.program, this.uniforms);
         twgl.drawBufferInfo(this.gl, this.bufferInfo);
     }
 

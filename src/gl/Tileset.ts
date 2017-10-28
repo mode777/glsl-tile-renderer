@@ -19,7 +19,7 @@ export class Tileset {
         private gl: WebGLRenderingContext, 
         private options: TilesetOptions
     ){
-        this.size = [options.imagewidth, options.imageheight];
+        this.size = [Math.floor(options.imagewidth / options.tilewidth), Math.floor(options.imageheight / options.tileheight)];
         this.tileSize = [options.tilewidth, options.tileheight];
         this.texture = twgl.createTexture(gl, {
             src: options.image,

@@ -10,5 +10,8 @@
 		"noImplicitThis": false,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true
-	}
+	},
+	"exclude": [
+		"./assets/**"
+	]
 }

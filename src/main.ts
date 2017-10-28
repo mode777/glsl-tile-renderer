@@ -14,16 +14,23 @@ import { Tilemap } from "./gl/Tilemap";
     document.body.appendChild( stats.dom );
 
     const canvas = <HTMLCanvasElement>document.getElementById("canvas"); 
-    const gl = canvas.getContext("webgl");
+    const gl = canvas.getContext("webgl", {
+        alpha: false,
+        antialias: false
+    });
     //twgl.resizeCanvasToDisplaySize(canvas);
 
-    const map = require("../assets/maps/map2.json");
+    const map = require("../assets/maps/map4.json");
     map.tilesets[0].image = "../assets/textures/terrain_atlas.png";
     map.tilesets[0].interpolation = gl.LINEAR;
     
     const tileset = new Tileset(gl, map.tilesets[0]);
     const tilemap = new Tilemap(gl, tileset, map.layers[0]);
     const t = tilemap.transform;
+    
+    const map2 = require("../assets/maps/map2.json");
+    const tilemap2 = new Tilemap(gl, tileset, map2.layers[0]);
+    tilemap2.transform = tilemap.transform;
 
     let x = 0;
     let y = 0;
@@ -37,9 +44,9 @@ import { Tilemap } from "./gl/Tilemap";
 
     const render = () => {
         stats.begin();
-        t.sx -= 0.0005;
-        t.sy -= 0.0005;
-        t.rot += 0.005;
+        //t.sx -= 0.0005;
+        //t.sy -= 0.0005;
+        //t.rot += 0.005;
 
         t.x += 0.001;
         t.y += 0.001;
@@ -48,6 +55,7 @@ import { Tilemap } from "./gl/Tilemap";
         //t.x = Math.floor(x)/256;
         //t.y = Math.floor(y)/256;
     
+        tilemap2.render();
         tilemap.render();
 
         requestAnimationFrame(render);
