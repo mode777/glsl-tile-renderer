@@ -20,27 +20,56 @@ import { Tilemap } from "./gl/Tilemap";
     });
     //twgl.resizeCanvasToDisplaySize(canvas);
 
-    const map = require("../assets/maps/map4.json");
-    map.tilesets[0].image = "../assets/textures/terrain_atlas.png";
+    const map = require("../assets/maps/map5.json");
+    map.tilesets[0].image = "../assets/textures/tileset.png";
     map.tilesets[0].interpolation = gl.LINEAR;
     
     const tileset = new Tileset(gl, map.tilesets[0]);
     const tilemap = new Tilemap(gl, tileset, map.layers[0]);
     const t = tilemap.transform;
     
-    const map2 = require("../assets/maps/map2.json");
-    const tilemap2 = new Tilemap(gl, tileset, map2.layers[0]);
-    tilemap2.transform = tilemap.transform;
-
-    let x = 0;
-    let y = 0;
-
     t.ox = 0.5;
     t.oy = 0.5;
-    tilemap.transform.sx = 0.0525
-    tilemap.transform.sy = 0.0525
+    //tilemap.transform.sx = 0.0525
+    //tilemap.transform.sy = 0.0525
     tilemap.transform.sx = 1;
     tilemap.transform.sy = 1;
+
+    let drag = false;
+    let lastPos = null;
+
+    gl.canvas.onmousewheel = (e) => {
+        var offset = 1. + e.wheelDelta * 0.001;
+        t.sx *= offset;
+        t.sy *= offset;
+    }
+
+    gl.canvas.onmouseleave = () => drag = false;
+    gl.canvas.onmouseup = (e) => {
+        drag = false;
+    }
+
+    gl.canvas.onmousedown = (e) => {
+        if(e.button !== 0)
+            return;
+
+        drag = true;
+        lastPos = [e.clientX, e.clientY];
+    }
+
+    gl.canvas.onmousemove = (e) => {
+        if(!drag)
+        return;
+        
+        const offset = [ e.clientX - lastPos[0], e.clientY - lastPos[1] ];
+        
+        t.x += offset[0] / (tileset.size[0] * tileset.tileSize[0]);
+        t.y += offset[1] / (tileset.size[1] * tileset.tileSize[1]);
+
+        lastPos = [e.clientX, e.clientY];
+    }
+
+
 
     const render = () => {
         stats.begin();
@@ -48,15 +77,15 @@ import { Tilemap } from "./gl/Tilemap";
         //t.sy -= 0.0005;
         //t.rot += 0.005;
 
-        t.x += 0.001;
-        t.y += 0.001;
+        //t.x += 0.001;
+        //t.y += 0.001;
         //x += 0.5;
         //y += 0.5;
         //t.x = Math.floor(x)/256;
         //t.y = Math.floor(y)/256;
     
-        tilemap2.render();
         tilemap.render();
+        //tilemap.render();
 
         requestAnimationFrame(render);
         stats.end();

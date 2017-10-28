@@ -122,6 +122,7 @@ export class Transform2d {
             this._buildQuat();
 
         mat4.fromRotationTranslationScaleOrigin(this._matrix,this._quat, this._trans, this._scale, this._origin);
+        mat4.invert(this._matrix, this._matrix);
         this._dirty = false;
     }
 
