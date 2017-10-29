@@ -22,16 +22,23 @@ void main() {
     // normalize coordinates to a sub-pixel grid;
     vec2 uv =  floor(v_texcoord * fac) / fac;
     
-	vec2 coord = floor(texture2D(texture, uv).rg * 255. + 0.1);
+	vec3 coord = floor(texture2D(texture, uv).rgb * 255. + 0.1);
+    vec2 flip = sign(vec2(
+            mod(coord.z, 2.), 
+            mod(
+                floor(coord.z/2.), 2.)));    
+
     //if(coord.x == 255.0 && coord.y == 255.0)
     //    discard;
     
     vec2 frac = fract(uv * map_size);
+    // flip tile
+    frac = abs(flip - frac);
         
     frac = clamp(frac, clamp_low, clamp_high);
     
     vec2 local_uv = (frac * set);
-    vec2 local_offset = set * coord;
+    vec2 local_offset = set * coord.rg;
     
     vec4 result = texture2D(tileset, local_offset + local_uv).rgba;
     if(result.a < 1.0)

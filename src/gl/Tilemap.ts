@@ -103,6 +103,7 @@ export class Tilemap {
             //console.log(tid)
             bytes[offset] = tid % this.tileset.size[0];
             bytes[offset+1] = Math.floor(tid / this.tileset.size[0]);
+            bytes[offset+2] = 0;
         });
         console.log(bytes)
 

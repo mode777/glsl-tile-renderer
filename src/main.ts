@@ -20,8 +20,8 @@ import { Tilemap } from "./gl/Tilemap";
     });
     //twgl.resizeCanvasToDisplaySize(canvas);
 
-    const map = require("../assets/maps/map5.json");
-    map.tilesets[0].image = "../assets/textures/tileset.png";
+    const map = require("../assets/maps/map6.json");
+    map.tilesets[0].image = "../assets/textures/grass_dirt.png";
     map.tilesets[0].interpolation = gl.LINEAR;
     
     const tileset = new Tileset(gl, map.tilesets[0]);
@@ -38,44 +38,49 @@ import { Tilemap } from "./gl/Tilemap";
     let drag = false;
     let lastPos = null;
 
-    gl.canvas.onmousewheel = (e) => {
-        var offset = 1. + e.wheelDelta * 0.001;
-        t.sx *= offset;
-        t.sy *= offset;
-    }
+    // gl.canvas.onmousewheel = (e) => {
+    //     var offset = 1. + e.wheelDelta * 0.001;
+    //     t.sx *= offset;
+    //     t.sy *= offset;
+    // }
 
-    gl.canvas.onmouseleave = () => drag = false;
-    gl.canvas.onmouseup = (e) => {
-        drag = false;
-    }
+    // gl.canvas.onmouseleave = () => drag = false;
+    // gl.canvas.onmouseup = (e) => {
+    //     drag = false;
+    // }
 
-    gl.canvas.onmousedown = (e) => {
-        if(e.button !== 0)
-            return;
+    // gl.canvas.onmousedown = (e) => {
+    //     if(e.button !== 0)
+    //         return;
 
-        drag = true;
-        lastPos = [e.clientX, e.clientY];
-    }
+    //     drag = true;
+    //     lastPos = [e.clientX, e.clientY];
+    // }
 
-    gl.canvas.onmousemove = (e) => {
-        if(!drag)
-        return;
+    // gl.canvas.onmousemove = (e) => {
+    //     if(!drag)
+    //     return;
         
-        const offset = [ e.clientX - lastPos[0], e.clientY - lastPos[1] ];
+    //     const offset = [ e.clientX - lastPos[0], e.clientY - lastPos[1] ];
         
-        t.x += offset[0] / (tileset.size[0] * tileset.tileSize[0]);
-        t.y += offset[1] / (tileset.size[1] * tileset.tileSize[1]);
+    //     t.x += offset[0] / (tileset.size[0] * tileset.tileSize[0]);
+    //     t.y += offset[1] / (tileset.size[1] * tileset.tileSize[1]);
 
-        lastPos = [e.clientX, e.clientY];
-    }
+    //     lastPos = [e.clientX, e.clientY];
+    // }
 
 
-
-    const render = () => {
+    const render = (time) => {
         stats.begin();
+
+        const scale = Math.sin(time /5000) * 1.5 + 1.8;
+        
+        
+        t.sx = scale;
+        t.sy = scale;  
         //t.sx -= 0.0005;
         //t.sy -= 0.0005;
-        //t.rot += 0.005;
+        t.rot += 0.005;
 
         //t.x += 0.001;
         //t.y += 0.001;
@@ -91,5 +96,5 @@ import { Tilemap } from "./gl/Tilemap";
         stats.end();
     }
 
-    render();
+    render(0);
 })();
