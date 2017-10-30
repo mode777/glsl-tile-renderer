@@ -89,7 +89,7 @@ import { Tilemap } from "./gl/Tilemap";
         //t.x = Math.floor(x)/256;
         //t.y = Math.floor(y)/256;
     
-        tilemap.render();
+        tilemap.render(time);
         //tilemap.render();
 
         requestAnimationFrame(render);

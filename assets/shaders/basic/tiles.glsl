@@ -2,6 +2,7 @@ precision mediump float;
 
 uniform sampler2D texture;
 uniform sampler2D tileset;
+uniform float time;
 
 const vec2 map_size = vec2({{=Math.floor(it.map_size[0])}}.0,{{=Math.floor(it.map_size[1])}}.0);
 //const vec2 map_size = vec2(1024.,1024.);
@@ -19,14 +20,21 @@ varying vec2 v_texcoord;
 
 void main() {
 
+    
     // normalize coordinates to a sub-pixel grid;
     vec2 uv =  floor(v_texcoord * fac) / fac;
-    
-	vec3 coord = floor(texture2D(texture, uv).rgb * 255. + 0.1);
+
+	vec4 coord = floor(texture2D(texture, uv).rgba * 255. + 0.1);
     vec2 flip = sign(vec2(
             mod(coord.z, 2.), 
             mod(
                 floor(coord.z/2.), 2.)));    
+
+
+    float animSpeed = floor(coord.a / 16.0 + 0.1) + 1.;
+    float animRange = mod(coord.a, 16.0)+1.;
+    float animOffset = mod(floor(time/(100. * animSpeed)), animRange);
+    coord.x += animOffset; 
 
     //if(coord.x == 255.0 && coord.y == 255.0)
     //    discard;

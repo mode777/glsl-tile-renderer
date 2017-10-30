@@ -8,7 +8,7 @@ dot.templateSettings.strip = false;
 
 const VS = require("../../assets/shaders/basic/texture_vs.glsl");
 const FS_TEMPLATE = dot.template(require("../../assets/shaders/basic/tiles.glsl"), dot.templateSettings);
-const COMP_COLOR = 3;
+const COMP_COLOR = 4;
 
 export interface TilemapOptions {
     width: number,
@@ -36,7 +36,8 @@ export class Tilemap {
         map_size: [],
         tile_size: [],
         matrix: null,
-        scale: null
+        scale: null,
+        time: 0
     }
 
     constructor(
@@ -53,16 +54,17 @@ export class Tilemap {
         this.createData(options.data);
         this.createTexture();
 
-        this.updateUniforms();        
+        this.updateUniforms(0);        
     }
 
-    private updateUniforms(){
+    private updateUniforms(time: number){
         const scale = [this.gl.canvas.width / (this.size[0] * this.tileset.tileSize[0]), this.gl.canvas.height / (this.size[1] * this.tileset.tileSize[1])];
 
         this.uniforms.texture = this.texture;
         this.uniforms.tileset = this.tileset.texture;
         this.uniforms.matrix = this.transform.matrix;
         this.uniforms.scale = scale;
+        this.uniforms.time = time;
     }
 
     private createBufferInfo(){
@@ -89,7 +91,7 @@ export class Tilemap {
             height: this.size[1],
             min: this.gl.NEAREST,
             mag: this.gl.NEAREST,
-            format: this.gl.RGB,
+            format: this.gl.RGBA,
             type: this.gl.UNSIGNED_BYTE,
             src: this.data
         });
@@ -103,7 +105,10 @@ export class Tilemap {
             //console.log(tid)
             bytes[offset] = tid % this.tileset.size[0];
             bytes[offset+1] = Math.floor(tid / this.tileset.size[0]);
-            bytes[offset+2] = 0;
+            if(tid == 45){
+                bytes[offset+2] = 0;
+                bytes[offset+3] = (10 * 16) + 2;
+            }
         });
         console.log(bytes)
 
@@ -115,8 +120,8 @@ export class Tilemap {
         // TODO: Delete other buffers
     }
 
-    public render(){
-        this.updateUniforms();
+    public render(time: number){
+        this.updateUniforms(time);
 
         this.gl.useProgram(this.program.program);
         twgl.setBuffersAndAttributes(this.gl, this.program, this.bufferInfo);
