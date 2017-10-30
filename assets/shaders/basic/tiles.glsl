@@ -21,16 +21,13 @@ varying vec2 v_texcoord;
 void main() {
 
     
-    // normalize coordinates to a sub-pixel grid;
+    // Anti-flicker: normalize coordinates to a sub-pixel grid;
     vec2 uv =  floor(v_texcoord * fac) / fac;
 
 	vec4 coord = floor(texture2D(texture, uv).rgba * 255. + 0.1);
-    vec2 flip = sign(vec2(
-            mod(coord.z, 2.), 
-            mod(
-                floor(coord.z/2.), 2.)));    
+    vec2 frac = fract(uv * map_size);
 
-
+    // animation
     float animSpeed = floor(coord.a / 16.0 + 0.1) + 1.;
     float animRange = mod(coord.a, 16.0)+1.;
     float animOffset = mod(floor(time/(100. * animSpeed)), animRange);
@@ -39,10 +36,14 @@ void main() {
     //if(coord.x == 255.0 && coord.y == 255.0)
     //    discard;
     
-    vec2 frac = fract(uv * map_size);
     // flip tile
+    vec2 flip = sign(vec2(
+            mod(coord.z, 2.), 
+            mod(
+                floor(coord.z/2.), 2.)));    
     frac = abs(flip - frac);
-        
+
+    // Fix bleeding with linear filtering;        
     frac = clamp(frac, clamp_low, clamp_high);
     
     vec2 local_uv = (frac * set);
