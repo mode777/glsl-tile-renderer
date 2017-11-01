@@ -5,4 +5,10 @@ html, body {
   height: 100%;
 }
 
+canvas {
+  image-rendering: pixelated;
+  /* width: 1024px;
+  height: 576px; */
+}
+
 

@@ -10,6 +10,10 @@ const VS = require("../../assets/shaders/basic/texture_vs.glsl");
 const FS_TEMPLATE = dot.template(require("../../assets/shaders/basic/tiles.glsl"), dot.templateSettings);
 const COMP_COLOR = 4;
 
+const FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+const FLIPPED_VERTICALLY_FLAG   = 0x40000000;
+const FLIPPED_DIAGONALLY_FLAG   = 0x20000000;
+
 export interface TilemapOptions {
     width: number,
     height: number,
@@ -101,14 +105,16 @@ export class Tilemap {
         const bytes = new Uint8Array(this.size[0] * this.size[1] * COMP_COLOR)
         data.forEach((id, index) => {
             const offset = index * COMP_COLOR;
+            
+            let flip = 0;
+            flip += id & FLIPPED_HORIZONTALLY_FLAG ? 1 : 0;
+            flip += id & FLIPPED_VERTICALLY_FLAG ? 2 : 0; 
+            
             const tid = id-1;
             //console.log(tid)
             bytes[offset] = tid % this.tileset.size[0];
             bytes[offset+1] = Math.floor(tid / this.tileset.size[0]);
-            if(tid == 45){
-                bytes[offset+2] = 0;
-                bytes[offset+3] = (10 * 16) + 2;
-            }
+            bytes[offset+2] = flip;
         });
         console.log(bytes)
 

@@ -26,6 +26,9 @@ import { Tilemap } from "./gl/Tilemap";
     
     const tileset = new Tileset(gl, map.tilesets[0]);
     const tilemap = new Tilemap(gl, tileset, map.layers[0]);
+    const tilemap2 = new Tilemap(gl, tileset, map.layers[1]);
+    tilemap2.transform = tilemap.transform;
+
     const t = tilemap.transform;
     
     t.ox = 0.5;
@@ -73,23 +76,24 @@ import { Tilemap } from "./gl/Tilemap";
     const render = (time) => {
         stats.begin();
 
-        const scale = Math.sin(time /5000) * 1.5 + 1.8;
+        //const scale = Math.sin(time /5000) * 1.5 + 1.8;
         
         
-        t.sx = scale;
-        t.sy = scale;  
+        t.sx = 2;
+        t.sy = 2;  
         //t.sx -= 0.0005;
         //t.sy -= 0.0005;
-        t.rot += 0.005;
+        //t.rot += 0.005;
 
-        //t.x += 0.001;
-        //t.y += 0.001;
+        t.x += 0.001;
+        t.y += 0.001;
         //x += 0.5;
         //y += 0.5;
         //t.x = Math.floor(x)/256;
         //t.y = Math.floor(y)/256;
     
         tilemap.render(time);
+        tilemap2.render(time);
         //tilemap.render();
 
         requestAnimationFrame(render);
